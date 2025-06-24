@@ -337,6 +337,7 @@
           if (contentType && contentType.includes("application/json")) {
             result = await response.json();
           } else {
+            // Not JSON, show error
             showErrorAlert(
               'Server Error',
               'Received an unexpected response from the server. Please try again later.'
