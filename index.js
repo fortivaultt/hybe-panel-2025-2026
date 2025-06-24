@@ -113,19 +113,19 @@ const subscriptions = {
         "HYBE_GOLDEN_Upgrade_fee": "<span style='color: red; font-weight: bold;'>[ $3,670 USDT ]</span>",
         "Email": "aneetatheresa@gmail.com"
     },
-    "B07200EF6667": {
-        "Full_name": "<span style='font-weight: bold;'>ANEETA VARGHESE</span>",
-        "Date_of_Birth": "Nov 3, 19**",
-        "Country": "India",
+    "HYB10250GB0680": {
+        "Full_name": "<span style='font-weight: bold;'>M Elisabete F Magalhaes</span>",
+        "Date_of_Birth": "1980-06-30",
+        "Country": "United Kingdom",
         "Status": "<span style='color: green; font-weight: bold;'>Active</span>",
-        "Activation_Date": "<span style='font-weight: bold;'>Dec 31, 2024</span>",
-        "Expiration_Date": "<span style='font-weight: bold;'>Dec 31, 2025</span>",
+        "Activation_Date": "<span style='font-weight: bold;'>June 10, 2025</span>",
+        "Expiration_Date": "<span style='font-weight: bold;'>June 10, 2026</span>",
         "HYBE_License_PIN": "*********",
         "HYBE_Chat_License_info": "<span style='color: red; font-weight: bold;'>[ ON HOLD ]</span>",
-        "HYBE_License_Status": " <span style='color: red; font-weight: bold;'>[ACTION REQUIRED]</span> Kindly Upgrade your subscription ID to <span style='font-weight: bold;'>HYBE-GOLDEN</span> to access your <span style='font-weight: bold;'>HYBE License PIN</span>",
+        "HYBE_License_Status": " <span style='color: red; font-weight: bold;'>[ACTION REQUIRED]</span> Kindly Upgrade your subscription ID to <span style='font-weight: bold;'>HYBE-GOLDEN</span> to access your HYBE Profile<span style='font-weight: bold;'>HYBE License PIN</span>",
         "Current_ID_Level": "<span style='color: red; font-weight: bold;'>[BASIC LV 1]</span>",
-        "HYBE_GOLDEN_Upgrade_fee": "<span style='color: red; font-weight: bold;'>[ $5,670 USDT ]</span>",
-        "Email": "aneetatheresa@gmail.com"
+        "HYBE_GOLDEN_Upgrade_fee": "<span style='color: red; font-weight: bold;'>[ £27,831.02 ]</span>",
+        "Email": "bettamagalhaes@gmail.com"
     },
 };
 
