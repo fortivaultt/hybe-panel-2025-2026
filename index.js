@@ -24,7 +24,9 @@ app.use(helmet({
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.NODE_ENV === "production" ? "https://your-domain.com" : true,
+  origin: process.env.NODE_ENV === "production"
+    ? "https://hybecorp-permitvalidator.vercel.app"
+    : true,
   credentials: true
 }));
 

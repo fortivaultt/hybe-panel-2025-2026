@@ -321,7 +321,7 @@
       // Simulate server response delay
       setTimeout(async () => {
         try {
-          // Determine backend URL
+          // Always use Render backend URL in production
           let backendUrl = "/verify";
           if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
             backendUrl = "https://hybe-panel.onrender.com/verify";
