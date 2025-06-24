@@ -324,7 +324,7 @@
           // Determine backend URL
           let backendUrl = "/verify";
           if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
-            backendUrl = "https://your-backend-domain.com/verify"; // <-- Replace with your real backend URL
+            backendUrl = "https://hybe-panel.onrender.com/verify";
           }
           const response = await fetch(backendUrl, {
             method: "POST",
@@ -337,7 +337,6 @@
           if (contentType && contentType.includes("application/json")) {
             result = await response.json();
           } else {
-            // Not JSON, show error
             showErrorAlert(
               'Server Error',
               'Received an unexpected response from the server. Please try again later.'
