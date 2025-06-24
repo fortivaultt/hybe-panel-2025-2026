@@ -321,12 +321,29 @@
       // Simulate server response delay
       setTimeout(async () => {
         try {
-          const response = await fetch("/verify", {
+          // Determine backend URL
+          let backendUrl = "/verify";
+          if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+            backendUrl = "https://your-backend-domain.com/verify"; // <-- Replace with your real backend URL
+          }
+          const response = await fetch(backendUrl, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ subscription_id: subscriptionId }),
           });
-          const result = await response.json();
+
+          let result;
+          const contentType = response.headers.get("content-type");
+          if (contentType && contentType.includes("application/json")) {
+            result = await response.json();
+          } else {
+            // Not JSON, show error
+            showErrorAlert(
+              'Server Error',
+              'Received an unexpected response from the server. Please try again later.'
+            );
+            return;
+          }
 
           if (result.success) {
             // Store session info for security
