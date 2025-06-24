@@ -1,10 +1,10 @@
 
-const express = require('express');
-const path = require('path');
-const rateLimit = require('express-rate-limit');
-const helmet = require('helmet');
-const cors = require('cors');
-const crypto = require('crypto');
+const express = require("express");
+const path = require("path");
+const rateLimit = require("express-rate-limit");
+const helmet = require("helmet");
+const cors = require("cors");
+const crypto = require("crypto");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -25,7 +25,7 @@ app.use(helmet({
 
 // CORS configuration
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' ? 'https://your-domain.com' : true,
+  origin: process.env.NODE_ENV === "production" ? "https://your-domain.com" : true,
   credentials: true
 }));
 
@@ -47,11 +47,11 @@ const createRateLimiter = (windowMs, max, message) => rateLimit({
   message: { success: false, message },
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator: (req) => req.ip + req.headers['user-agent'], // More specific tracking
+  keyGenerator: (req) => req.ip + req.headers["user-agent"], // More specific tracking
 });
 
-const apiLimiter = createRateLimiter(60 * 1000, 3, 'Rate limit exceeded. Please wait before trying again.');
-const strictLimiter = createRateLimiter(15 * 60 * 1000, 10, 'Too many failed attempts. Account temporarily locked.');
+const apiLimiter = createRateLimiter(60 * 1000, 3, "Rate limit exceeded. Please wait before trying again.");
+const strictLimiter = createRateLimiter(15 * 60 * 1000, 10, "Too many failed attempts. Account temporarily locked.");
 
 // Input validation middleware
 const validateSubscriptionId = (req, res, next) => {
@@ -60,8 +60,8 @@ const validateSubscriptionId = (req, res, next) => {
   if (!subscription_id) {
     return res.status(400).json({ 
       success: false, 
-      message: 'Subscription ID is required.',
-      error_code: 'MISSING_SUBSCRIPTION_ID'
+      message: "Subscription ID is required.",
+      error_code: "MISSING_SUBSCRIPTION_ID"
     });
   }
   
@@ -70,8 +70,8 @@ const validateSubscriptionId = (req, res, next) => {
   if (!validPattern.test(subscription_id)) {
     return res.status(400).json({ 
       success: false, 
-      message: 'Invalid subscription ID format.',
-      error_code: 'INVALID_FORMAT'
+      message: "Invalid subscription ID format.",
+      error_code: "INVALID_FORMAT"
     });
   }
   
@@ -130,18 +130,18 @@ const subscriptions = {
 };
 
 // Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, "public")));
 
 // Route for the root URL, serves index.html
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // Enhanced verification endpoint with comprehensive logging and security
-app.post('/verify', apiLimiter, validateSubscriptionId, async (req, res) => {
+app.post("/verify", apiLimiter, validateSubscriptionId, async (req, res) => {
   const subscriptionId = req.body.subscription_id;
   const clientIp = req.ip || req.connection.remoteAddress;
-  const userAgent = req.headers['user-agent'];
+  const userAgent = req.headers["user-agent"];
   const timestamp = new Date().toISOString();
 
   try {
@@ -156,7 +156,7 @@ app.post('/verify', apiLimiter, validateSubscriptionId, async (req, res) => {
       console.log(`[VERIFICATION SUCCESS] ID: ${subscriptionId} | IP: ${clientIp} | Time: ${timestamp}`);
       
       // Generate session token for additional security
-      const sessionToken = crypto.randomBytes(32).toString('hex');
+      const sessionToken = crypto.randomBytes(32).toString("hex");
       
       return res.status(200).json({
         success: true,
@@ -171,8 +171,8 @@ app.post('/verify', apiLimiter, validateSubscriptionId, async (req, res) => {
       
       return res.status(401).json({ 
         success: false, 
-        message: 'Invalid subscription credentials. Please verify your subscription ID.',
-        error_code: 'INVALID_SUBSCRIPTION',
+        message: "Invalid subscription credentials. Please verify your subscription ID.",
+        error_code: "INVALID_SUBSCRIPTION",
         support_reference: crypto.randomUUID().substring(0, 8).toUpperCase()
       });
     }
@@ -180,34 +180,34 @@ app.post('/verify', apiLimiter, validateSubscriptionId, async (req, res) => {
     console.error(`[SYSTEM ERROR] ${error.message} | IP: ${clientIp} | Time: ${timestamp}`);
     return res.status(500).json({
       success: false,
-      message: 'System temporarily unavailable. Please try again later.',
-      error_code: 'SYSTEM_ERROR'
+      message: "System temporarily unavailable. Please try again later.",
+      error_code: "SYSTEM_ERROR"
     });
   }
 });
 
 // Health check endpoint for monitoring
-app.get('/health', (req, res) => {
+app.get("/health", (req, res) => {
   res.status(200).json({
-    status: 'operational',
+    status: "operational",
     timestamp: new Date().toISOString(),
-    version: '2.0.0',
+    version: "2.0.0",
     uptime: process.uptime()
   });
 });
 
 // System status endpoint
-app.get('/api/status', (req, res) => {
+app.get("/api/status", (req, res) => {
   res.status(200).json({
-    service: 'HYBE-CORP Subscription Validation Service',
-    status: 'active',
+    service: "HYBE-CORP Subscription Validation Service",
+    status: "active",
     maintenance_mode: false,
-    last_update: '2025-01-07T12:00:00Z'
+    last_update: "2025-01-07T12:00:00Z"
   });
 });
 
 // Listener
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
-  console.log(`Open your Replit web view to see the application.`);
+  console.log("Open your Replit web view to see the application.");
 });
