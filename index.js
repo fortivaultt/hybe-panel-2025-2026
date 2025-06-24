@@ -1,4 +1,3 @@
-
 const express = require("express");
 const path = require("path");
 const rateLimit = require("express-rate-limit");
@@ -51,7 +50,6 @@ const createRateLimiter = (windowMs, max, message) => rateLimit({
 });
 
 const apiLimiter = createRateLimiter(60 * 1000, 3, "Rate limit exceeded. Please wait before trying again.");
-const strictLimiter = createRateLimiter(15 * 60 * 1000, 10, "Too many failed attempts. Account temporarily locked.");
 
 // Input validation middleware
 const validateSubscriptionId = (req, res, next) => {
