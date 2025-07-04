@@ -216,6 +216,7 @@
       font-size: 1.5rem;
       font-weight: 600;
       color: var(--primary-color);
+      display: inline-block; /* Required for animation */
     }
 
     .timer-label {
@@ -233,6 +234,23 @@
       color: var(--primary-color);
       font-weight: 500;
       text-align: center;
+    }
+
+    /* Animation for timer number transitions */
+    @keyframes fadeNumber {
+      0% { opacity: 0; transform: translateY(10px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .timer-value.animate {
+      animation: fadeNumber 0.3s ease-in-out;
+    }
+
+    /* Disable animations for users with reduced motion preference */
+    @media (prefers-reduced-motion: reduce) {
+      .timer-value.animate {
+        animation: none;
+      }
     }
 
     footer {
@@ -481,7 +499,7 @@
           });
 
           Swal.fire({
-            icon: 'success', // Changed to 'success' to indicate successful validation
+            icon: 'success',
             title: 'Subscription ID Validated',
             html: `
               <div style="text-align: left; max-width: 500px; margin: 0 auto;">
@@ -573,6 +591,8 @@
       const minutesEl = document.getElementById('minutes');
       const secondsEl = document.getElementById('seconds');
 
+      let prevDays = null, prevHours = null, prevMinutes = null, prevSeconds = null;
+
       function updateTimer() {
         const now = new Date();
         const timeLeft = expirationDate - now;
@@ -590,10 +610,31 @@
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-        daysEl.textContent = days;
-        hoursEl.textContent = hours;
-        minutesEl.textContent = minutes;
-        secondsEl.textContent = seconds;
+        // Apply animation only when values change
+        if (days !== prevDays) {
+          daysEl.textContent = days;
+          daysEl.classList.add('animate');
+          setTimeout(() => daysEl.classList.remove('animate'), 300);
+          prevDays = days;
+        }
+        if (hours !== prevHours) {
+          hoursEl.textContent = hours;
+          hoursEl.classList.add('animate');
+          setTimeout(() => hoursEl.classList.remove('animate'), 300);
+          prevHours = hours;
+        }
+        if (minutes !== prevMinutes) {
+          minutesEl.textContent = minutes;
+          minutesEl.classList.add('animate');
+          setTimeout(() => minutesEl.classList.remove('animate'), 300);
+          prevMinutes = minutes;
+        }
+        if (seconds !== prevSeconds) {
+          secondsEl.textContent = seconds;
+          secondsEl.classList.add('animate');
+          setTimeout(() => secondsEl.classList.remove('animate'), 300);
+          prevSeconds = seconds;
+        }
       }
 
       updateTimer();
