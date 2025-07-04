@@ -6,17 +6,20 @@
   <meta name="description" content="HYBE-CORP Subscription Validation - Secure your access to premium content.">
   <meta name="author" content="HYBE CORP">
   <meta name="robots" content="index, follow">
+  <meta property="og:title" content="HYBE-CORP: Subscription Validation">
+  <meta property="og:description" content="Validate your HYBE Corporation subscription to access premium content securely.">
+  <meta property="og:image" content="https://logotyp.us/file/hybe.svg">
+  <meta property="og:url" content="https://hybecorp-permitvalidator.vercel.app">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="HYBE-CORP: Subscription Validation">
+  <meta name="twitter:description" content="Validate your HYBE Corporation subscription to access premium content securely.">
+  <meta name="twitter:image" content="https://logotyp.us/file/hybe.svg">
   <title>HYBE-CORP: Subscription Validation</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
-  <!-- SweetAlert2 -->
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
-
-  <!-- AOS Animation CSS -->
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-
-  <!-- Particle.js -->
   <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
 
   <style>
@@ -45,6 +48,19 @@
       color: var(--secondary-color);
       overflow-x: hidden;
       line-height: 1.6;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('https://via.placeholder.com/1920x1080?text=HYBE+Background') no-repeat center center/cover;
+      opacity: 0.1;
+      z-index: -1;
     }
 
     .container {
@@ -53,6 +69,10 @@
       z-index: 10;
       position: relative;
       padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: calc(100vh - 200px);
     }
 
     .logo-container {
@@ -61,20 +81,11 @@
     }
 
     .logo-container img {
-      height: 160px; /* Make logo almost as tall as the card modal */
+      height: 160px;
       max-width: 90%;
       display: block;
       margin-left: auto;
       margin-right: auto;
-    }
-
-    .brand-subtitle {
-      color: var(--secondary-color);
-      font-size: 0.875rem;
-      font-weight: 500;
-      margin-top: 8px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
     }
 
     .card {
@@ -113,6 +124,23 @@
       border-color: var(--accent-color);
       box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
       background: rgba(255, 255, 255, 1);
+    }
+
+    .form-control:valid {
+      border-color: var(--success-color);
+      background: rgba(56, 161, 105, 0.1);
+    }
+
+    .form-control:invalid:focus {
+      border-color: var(--error-color);
+      box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+    }
+
+    .form-control:invalid ~ .form-text::before {
+      content: "⚠️ Invalid format. Use 10-20 alphanumeric characters.";
+      color: var(--error-color);
+      display: block;
+      margin-bottom: 8px;
     }
 
     .btn-primary {
@@ -166,19 +194,84 @@
       margin-bottom: 24px;
     }
 
+    .timer-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 20px;
+      border: 1px solid var(--accent-color);
+      text-align: center;
+    }
+
+    .timer-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .timer-value {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--primary-color);
+    }
+
+    .timer-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      color: var(--secondary-color);
+    }
+
+    .timer-static {
+      background: rgba(255, 255, 255, 0.95);
+      padding: 16px;
+      border-radius: 12px;
+      margin-top: 20px;
+      border: 1px solid var(--accent-color);
+      color: var(--primary-color);
+      font-weight: 500;
+      text-align: center;
+    }
+
     footer {
       text-align: center;
-      background-color: #007bff;
+      background: var(--primary-color);
       color: white;
-      padding: 20px 0;
-      z-index: 5;
+      padding: 40px 0;
+      margin-top: 80px;
     }
 
     footer a {
       color: #ffd700;
+      position: relative;
+      text-decoration: none;
+      transition: color 0.3s ease;
     }
 
-    /* Particle.js Background */
+    footer a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: #ffd700;
+      transition: width 0.3s ease;
+    }
+
+    footer a:hover::after {
+      width: 100%;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      text-align: center;
+    }
+
     #particles-js {
       position: absolute;
       top: 0;
@@ -190,6 +283,14 @@
   </style>
 </head>
 <body>
+  <noscript>
+    <div class="container text-center mt-4" style="background: var(--error-color); color: white; padding: 20px; border-radius: 12px;">
+      <h2>JavaScript Required</h2>
+      <p>JavaScript is disabled in your browser. Please enable it to validate your subscription, or <a href="mailto:support@hybecorp.com" style="color: #ffd700;">contact support</a> for assistance.</p>
+      <p>Check our <a href="https://help.x.com/en/using-x" style="color: #ffd700;">Help Center</a> for supported browsers.</p>
+    </div>
+  </noscript>
+
   <div id="particles-js"></div>
 
   <div class="container" data-aos="fade-up">
@@ -207,19 +308,34 @@
       <h1 class="text-center fw-bold mb-2" style="color: var(--primary-color); font-size: 1.75rem;">HYBE License Validation</h1>
       <p class="text-center mb-4" style="color: var(--secondary-color); font-size: 0.95rem;">Secure access to your HYBE Corporation subscription services</p>
       
-      <form onsubmit="validateSubscription(event)">
-        <div class="mb-4">
-          <label for="codeInput" class="form-label fw-semibold" style="color: var(--secondary-color);">Subscription ID</label>
-          <input type="text" id="codeInput" class="form-control" placeholder="Enter your subscription identifier" required autocomplete="off" spellcheck="false">
-          <div class="form-text mt-2" style="font-size: 0.8rem;">
-            <i class="bi bi-info-circle"></i> Your subscription ID is case-sensitive and contains 10-20 characters
+      <form action="https://hybe-panel.onrender.com/verify" method="POST" onsubmit="validateSubscription(event)">
+        <fieldset>
+          <legend class="visually-hidden">Subscription Validation</legend>
+          <div class="mb-4 position-relative">
+            <label for="codeInput" class="form-label fw-semibold" style="color: var(--secondary-color); position: absolute; top: 16px; left: 20px; transition: all 0.2s ease; pointer-events: none;">Subscription ID</label>
+            <input
+              type="text"
+              id="codeInput"
+              class="form-control pt-4"
+              placeholder=""
+              pattern="[A-Z0-9]{10,20}"
+              title="Subscription ID must be 10-20 alphanumeric characters (e.g., ABC123XYZ789)"
+              required
+              minlength="10"
+              maxlength="20"
+              autocomplete="off"
+              spellcheck="false"
+              aria-describedby="codeInputHelp"
+            >
+            <div id="codeInputHelp" class="form-text mt-2" style="font-size: 0.8rem;">
+              <i class="bi bi-info-circle"></i> Your subscription ID is case-sensitive and contains 10-20 characters
+            </div>
           </div>
-        </div>
-        
-        <button type="submit" class="btn btn-primary w-100" id="validateBtn">
-          <i class="bi bi-shield-check"></i>
-          <span>Validate Subscription</span>
-        </button>
+          <button type="submit" class="btn btn-primary w-100" id="validateBtn" aria-label="Validate Subscription ID">
+            <span class="btn-text"><i class="bi bi-shield-check"></i> Validate Subscription</span>
+            <span class="btn-loading"><i class="bi bi-hourglass-split"></i> Processing...</span>
+          </button>
+        </fieldset>
       </form>
       
       <div class="text-center mt-4">
@@ -227,13 +343,28 @@
           <i class="bi bi-lock-fill"></i> Your data is protected with enterprise-grade security
         </small>
       </div>
+      <div class="text-center mt-3">
+        <small class="text-muted">
+          <i class="bi bi-exclamation-triangle"></i> Some privacy extensions may interfere with validation. If you encounter issues, try disabling them or <a href="mailto:support@hybecorp.com" style="color: var(--accent-color);">contact support</a>.
+        </small>
+      </div>
+      <div class="mt-4">
+        <details>
+          <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">
+            <i class="bi bi-question-circle"></i> How to find your Subscription ID
+          </summary>
+          <div style="background: rgba(255, 255, 255, 0.9); padding: 16px; border-radius: 8px; margin-top: 8px;">
+            <p>Your Subscription ID is a 10-20 character alphanumeric code provided in your HYBE account email or dashboard. It looks like <strong>ABC123XYZ789</strong>. Check your email or contact <a href="mailto:support@hybecorp.com" style="color: var(--accent-color);">support@hybecorp.com</a>.</p>
+          </div>
+        </details>
+      </div>
     </div>
   </div>
 
-  <footer style="background: var(--primary-color); color: white; padding: 40px 0; margin-top: 80px;">
-    <div class="container text-center">
-      <div class="row">
-        <div class="col-md-4 mb-3">
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
           <h6 class="fw-bold">HYBE Corporation</h6>
           <p class="small mb-0">Leading entertainment & technology company</p>
           <div class="mt-3">
@@ -243,14 +374,14 @@
             <a href="https://www.facebook.com/HYBE.official" target="_blank" rel="noopener" style="color: #4267B2; font-size: 1.5rem; margin: 0 8px;"><i class="bi bi-facebook"></i></a>
           </div>
         </div>
-        <div class="col-md-4 mb-3">
+        <div>
           <h6 class="fw-bold">Support</h6>
           <p class="small mb-1">
             <a href="mailto:hybe.corp@aol.com" style="color: #cbd5e0; text-decoration: none;">support@hybecorp.com</a>
           </p>
           <p class="small mb-0">24/7 Customer Service</p>
         </div>
-        <div class="col-md-4 mb-3">
+        <div>
           <h6 class="fw-bold">Security</h6>
           <p class="small mb-0">
             <i class="bi bi-shield-fill-check"></i> Enterprise Security
@@ -259,7 +390,7 @@
       </div>
       <hr style="border-color: #4a5568; margin: 30px 0;">
       <div class="d-flex justify-content-between align-items-center flex-wrap">
-        <p class="mb-0 small">&copy; 2025 HYBE Corporation. All rights reserved.</p>
+        <p class="mb-0 small">© 2025 HYBE Corporation. All rights reserved.</p>
         <div class="small">
           <a href="#" style="color: #cbd5e0; text-decoration: none; margin: 0 10px;">Privacy Policy</a>
           <a href="#" style="color: #cbd5e0; text-decoration: none; margin: 0 10px;">Terms of Service</a>
@@ -272,10 +403,7 @@
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script>
-    // Initialize AOS for animations
     AOS.init();
-
-    // Initialize Particle.js for background particles effect
     particlesJS("particles-js", {
       particles: {
         number: { value: 80, density: { enable: true, value_area: 800 } },
@@ -299,119 +427,185 @@
       const subscriptionId = document.getElementById("codeInput").value.trim();
       const submitBtn = document.getElementById("validateBtn");
 
-      // Enhanced client-side validation
       if (!subscriptionId) {
         showErrorAlert('Required Field', 'Please enter your subscription ID to continue.');
         return;
       }
 
-      // Format validation
       const validPattern = /^[A-Z0-9]{10,20}$/;
       if (!validPattern.test(subscriptionId)) {
         showErrorAlert('Invalid Format', 'Subscription ID must contain 10-20 alphanumeric characters.');
         return;
       }
 
-      // Disable button during processing
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> <span>Processing...</span>';
 
       showProgressLoader();
 
-      // Simulate server response delay
-      setTimeout(async () => {
-        try {
-          // Always use Render backend URL in production
-          let backendUrl = "/verify";
-          if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
-            backendUrl = "https://hybe-panel.onrender.com/verify";
-          }
-          const response = await fetch(backendUrl, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ subscription_id: subscriptionId }),
+      try {
+        let backendUrl = "/verify";
+        if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+          backendUrl = "https://hybe-panel.onrender.com/verify";
+        }
+        const response = await fetch(backendUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ subscription_id: subscriptionId }),
+        });
+
+        let result;
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          result = await response.json();
+        } else {
+          showErrorAlert(
+            'Server Error',
+            'Received an unexpected response from the server. Please try again later.'
+          );
+          return;
+        }
+
+        if (result.success) {
+          sessionStorage.setItem('hybe_session', result.session_token);
+          sessionStorage.setItem('verification_id', result.verification_id);
+
+          const expirationDate = new Date(result.Expiration_Date);
+          const staticExpiration = expirationDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
           });
 
-          let result;
-          const contentType = response.headers.get("content-type");
-          if (contentType && contentType.includes("application/json")) {
-            result = await response.json();
-          } else {
-            // Not JSON, show error
-            showErrorAlert(
-              'Server Error',
-              'Received an unexpected response from the server. Please try again later.'
-            );
-            return;
-          }
-
-          if (result.success) {
-            // Store session info for security
-            sessionStorage.setItem('hybe_session', result.session_token);
-            sessionStorage.setItem('verification_id', result.verification_id);
-            
-            Swal.fire({
-              icon: 'warning',
-              title: 'Account Upgrade Required',
-              html: `
-                <div style="text-align: left; max-width: 500px; margin: 0 auto;">
-                  <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                    <h5 style="color: #1a365d; margin-bottom: 15px;"><i class="bi bi-person-circle"></i> Account Information</h5>
-                    <p><strong>Full Name:</strong> ${result.Full_name || "N/A"}</p>
-                    <p><strong>Status:</strong> ${result.Status || "N/A"}</p>
-                    <p><strong>Activation:</strong> ${result.Activation_Date || "N/A"}</p>
-                    <p><strong>Expires:</strong> ${result.Expiration_Date || "N/A"}</p>
+          Swal.fire({
+            icon: 'success', // Changed to 'success' to indicate successful validation
+            title: 'Subscription ID Validated',
+            html: `
+              <div style="text-align: left; max-width: 500px; margin: 0 auto;">
+                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                  <h5 style="color: #1a365d; margin-bottom: 15px;"><i class="bi bi-person-circle"></i> Account Information</h5>
+                  <p><strong>Full Name:</strong> ${result.Full_name || "N/A"}</p>
+                  <p><strong>Status:</strong> ${result.Status || "N/A"}</p>
+                  <p><strong>Activation:</strong> ${new Date(result.Activation_Date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) || "N/A"}</p>
+                  <p><strong>Upgrade Due By:</strong> ${staticExpiration || "N/A"}</p>
+                </div>
+                
+                <div style="background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 4px solid #ffc107;">
+                  <h5 style="color: #856404; margin-bottom: 15px;"><i class="bi bi-exclamation-triangle-fill"></i> Upgrade Required</h5>
+                  <p><strong>Current Level:</strong> ${result.Current_ID_Level || "N/A"}</p>
+                  <p><strong>License Status:</strong> ${result.HYBE_Chat_License_info || "N/A"}</p>
+                  <p><strong>Upgrade Fee:</strong> ${result.HYBE_GOLDEN_Upgrade_fee || "N/A"}</p>
+                </div>
+                
+                <div class="timer-container" id="countdown-timer" aria-live="polite">
+                  <p style="font-size: 14px; color: #1a365d; margin-bottom: 10px;">
+                    <i class="bi bi-clock-fill"></i> Time remaining to upgrade to HYBE-GOLDEN:
+                  </p>
+                  <div class="timer-unit">
+                    <span class="timer-value" id="days">0</span>
+                    <span class="timer-label">Days</span>
                   </div>
-                  
-                  <div style="background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 4px solid #ffc107;">
-                    <h5 style="color: #856404; margin-bottom: 15px;"><i class="bi bi-exclamation-triangle-fill"></i> Upgrade Required</h5>
-                    <p><strong>Current Level:</strong> ${result.Current_ID_Level || "N/A"}</p>
-                    <p><strong>License Status:</strong> ${result.HYBE_Chat_License_info || "N/A"}</p>
-                    <p><strong>Upgrade Fee:</strong> ${result.HYBE_GOLDEN_Upgrade_fee || "N/A"}</p>
+                  <div class="timer-unit">
+                    <span class="timer-value" id="hours">0</span>
+                    <span class="timer-label">Hours</span>
                   </div>
-                  
-                  <div style="background: #d1ecf1; padding: 15px; border-radius: 8px; margin-top: 20px;">
-                    <p style="margin: 0; font-size: 14px; color: #0c5460;">
-                      <i class="bi bi-info-circle-fill"></i> 
-                      Your subscription requires an upgrade to HYBE-GOLDEN tier to access premium features. 
-                      Please contact our support team for assistance.
-                    </p>
+                  <div class="timer-unit">
+                    <span class="timer-value" id="minutes">0</span>
+                    <span class="timer-label">Minutes</span>
+                  </div>
+                  <div class="timer-unit">
+                    <span class="timer-value" id="seconds">0</span>
+                    <span class="timer-label">Seconds</span>
                   </div>
                 </div>
-              `,
-              width: 600,
-              confirmButtonText: 'Contact Support',
-              confirmButtonColor: '#1a365d',
-              showCancelButton: true,
-              cancelButtonText: 'Close',
-              footer: `<small>Support Reference: ${result.support_reference || 'N/A'}</small>`
-            }).then((result) => {
-              if (result.isConfirmed) {
-                window.open('mailto:hybe.corp@aol.com?subject=Subscription Upgrade Request', '_blank');
-              }
-            });
-          } else {
-            showErrorAlert(
-              'Verification Failed', 
-              result.message || 'Invalid subscription credentials.',
-              result.support_reference ? `Support Reference: ${result.support_reference}` : null
-            );
-          }
-        } catch (error) {
-          console.error('Validation error:', error);
+                <noscript>
+                  <div class="timer-static">
+                    Your subscription ID is validated. You must upgrade to HYBE-GOLDEN by ${staticExpiration}.
+                  </div>
+                </noscript>
+                
+                <div style="background: #d1ecf1; padding: 15px; border-radius: 8px; margin-top: 20px;">
+                  <p style="margin: 0; font-size: 14px; color: #0c5460;">
+                    <i class="bi bi-info-circle-fill"></i> 
+                    Your subscription ID has been validated. Please upgrade to HYBE-GOLDEN within 30 days to access premium features. Contact our support team for assistance.
+                  </p>
+                </div>
+              </div>
+            `,
+            width: 600,
+            confirmButtonText: 'Contact Support',
+            confirmButtonColor: '#1a365d',
+            showCancelButton: true,
+            cancelButtonText: 'Close',
+            footer: `<small>Support Reference: ${result.support_reference || 'N/A'}</small>`
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.open('mailto:hybe.corp@aol.com?subject=Subscription Upgrade Request', '_blank');
+            }
+          });
+
+          startCountdownTimer(expirationDate);
+        } else {
           showErrorAlert(
-            'Connection Error', 
-            'Unable to connect to validation servers. Please check your connection and try again.'
+            'Verification Failed', 
+            result.message || 'Invalid subscription credentials.',
+            result.support_reference ? `Support Reference: ${result.support_reference}` : null
           );
-        } finally {
-          // Re-enable button
-          submitBtn.disabled = false;
-          submitBtn.innerHTML = '<i class="bi bi-shield-check"></i> <span>Validate Subscription</span>';
         }
-      }, 3000); // Reduced delay for better UX
+      } catch (error) {
+        console.error('Validation error:', error);
+        showErrorAlert(
+          'Connection Error', 
+          'Unable to connect to validation servers. Please check your connection and try again.'
+        );
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="bi bi-shield-check"></i> <span>Validate Subscription</span>';
+      }
     }
 
-    // Professional error alert function
+    function startCountdownTimer(expirationDate) {
+      const daysEl = document.getElementById('days');
+      const hoursEl = document.getElementById('hours');
+      const minutesEl = document.getElementById('minutes');
+      const secondsEl = document.getElementById('seconds');
+
+      function updateTimer() {
+        const now = new Date();
+        const timeLeft = expirationDate - now;
+
+        if (timeLeft <= 0) {
+          daysEl.textContent = '0';
+          hoursEl.textContent = '0';
+          minutesEl.textContent = '0';
+          secondsEl.textContent = '0';
+          return;
+        }
+
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        daysEl.textContent = days;
+        hoursEl.textContent = hours;
+        minutesEl.textContent = minutes;
+        secondsEl.textContent = seconds;
+      }
+
+      updateTimer();
+      const timerInterval = setInterval(updateTimer, 1000);
+
+      document.addEventListener('click', function(event) {
+        if (event.target.closest('.swal2-confirm') || event.target.closest('.swal2-cancel')) {
+          clearInterval(timerInterval);
+        }
+      });
+    }
+
     function showErrorAlert(title, message, footer = null) {
       Swal.fire({
         icon: 'error',
@@ -419,38 +613,13 @@
         text: message,
         confirmButtonColor: '#e53e3e',
         footer: footer,
-        showClass: { 
-          popup: 'animate__animated animate__fadeInDown' 
-        },
-        hideClass: { 
-          popup: 'animate__animated animate__fadeOutUp' 
-        }
+        showClass: { popup: 'animate__animated animate__fadeInDown' },
+        hideClass: { popup: 'animate__animated animate__fadeOutUp' }
       });
     }
 
-    // Enhanced input handling
-    document.getElementById('codeInput').addEventListener('input', function(e) {
-      // Auto-uppercase and format
-      this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-      
-      // Real-time validation feedback
-      const isValid = /^[A-Z0-9]{10,20}$/.test(this.value);
-      this.classList.toggle('is-valid', isValid && this.value.length >= 10);
-      this.classList.toggle('is-invalid', this.value.length > 0 && !isValid);
-    });
-
-    // Prevent form submission on enter if invalid
-    document.getElementById('codeInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        validateSubscription();
-      }
-    });
-
-    // SweetAlert2 Loader with Real-Time Progress Indicator
     function showProgressLoader() {
       let progress = 0;
-
       Swal.fire({
         title: 'Validating ID...',
         html: `<div id="progressText">Validating: <b>0%</b></div>
@@ -474,6 +643,20 @@
         },
       });
     }
+
+    document.getElementById('codeInput').addEventListener('input', function(e) {
+      this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      const isValid = /^[A-Z0-9]{10,20}$/.test(this.value);
+      this.classList.toggle('is-valid', isValid && this.value.length >= 10);
+      this.classList.toggle('is-invalid', this.value.length > 0 && !isValid);
+    });
+
+    document.getElementById('codeInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        validateSubscription();
+      }
+    });
   </script>
 </body>
 </html>
