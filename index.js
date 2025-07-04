@@ -41,14 +41,14 @@ app.use((req, res, next) => {
 // Middleware to parse JSON bodies
 app.use(express.json());
 
-// Enhanced rate limiting with different tiers
+// Enhanced rate limiting
 const createRateLimiter = (windowMs, max, message) => rateLimit({
   windowMs,
   max,
   message: { success: false, message },
   standardHeaders: true,
   legacyHeaders: false,
-  keyGenerator: (req) => req.ip + req.headers["user-agent"], // More specific tracking
+  keyGenerator: (req) => req.ip + req.headers["user-agent"],
 });
 
 const apiLimiter = createRateLimiter(60 * 1000, 3, "Rate limit exceeded. Please wait before trying again.");
@@ -65,7 +65,6 @@ const validateSubscriptionId = (req, res, next) => {
     });
   }
   
-  // Enhanced validation pattern
   const validPattern = /^[A-Z0-9]{10,20}$/;
   if (!validPattern.test(subscription_id)) {
     return res.status(400).json({ 
@@ -78,74 +77,84 @@ const validateSubscriptionId = (req, res, next) => {
   next();
 };
 
-// Enhanced subscription database with additional professional fields
+// Updated subscriptions database with 30-day expiration
 const subscriptions = {
-    "HYB07280EF6207": {
-        "subscription_id": "HYB07280EF6207",
-        "created_at": "2024-12-31T00:00:00Z",
-        "last_accessed": null,
-        "access_count": 0,
-        "ip_whitelist": [],
-        "Full_name": "<span style='font-weight: bold;'>ANEETA VARGHESE</span>",
-        "Date_of_Birth": "Nov 3, 19**",
-        "Country": "India",
-        "Status": "<span style='color: green; font-weight: bold;'>Active</span>",
-        "Activation_Date": "<span style='font-weight: bold;'>Dec 31, 2024</span>",
-        "Expiration_Date": "<span style='font-weight: bold;'>Dec 31, 2025</span>",
-        "HYBE_License_PIN": "*********",
-        "HYBE_Chat_License_info": "<span style='color: red; font-weight: bold;'>[ ON HOLD ]</span>",
-        "HYBE_License_Status": " <span style='color: red; font-weight: bold;'>[ACTION REQUIRED]</span> Kindly Upgrade your subscription ID to <span style='font-weight: bold;'>HYBE-GOLDEN</span> to access your <span style='font-weight: bold;'>HYBE License PIN</span>",
-        "Current_ID_Level": "<span style='color: red; font-weight: bold;'>[BASIC LV 1]</span>",
-        "HYBE_GOLDEN_Upgrade_fee": "<span style='color: red; font-weight: bold;'>[ $5,670 USDT ]</span>",
-        "Email": "aneetatheresa@gmail.com"
-    },
-    "HYBRUS07280EF6207": {
-        "Full_name": "<span style='font-weight: bold;'>ALYONA MISHINA</span>",
-        "Date_of_Birth": "Aug 09, 19**",
-        "Country": "Russia",
-        "Status": "<span style='color: green; font-weight: bold;'>Active</span>",
-        "Activation_Date": "<span style='font-weight: bold;'>Jan 07, 2025</span>",
-        "Expiration_Date": "<span style='font-weight: bold;'>Jan 07, 2026</span>",
-        "HYBE_License_PIN": "*********",
-        "HYBE_Chat_License_info": "<span style='color: red; font-weight: bold;'>[ ON HOLD ]</span>",
-        "HYBE_License_Status": " <span style='color: red; font-weight: bold;'>[ACTION REQUIRED]</span> Kindly Upgrade your subscription ID to <span style='font-weight: bold;'>HYBE-GOLDEN</span> to access your <span style='font-weight: bold;'>HYBE License PIN</span>",
-        "Current_ID_Level": "<span style='color: red; font-weight: bold;'>[BASIC LV 1]</span>",
-        "HYBE_GOLDEN_Upgrade_fee": "<span style='color: red; font-weight: bold;'>[ $3,670 USDT ]</span>",
-        "Email": "aneetatheresa@gmail.com"
-    },
-    "HYB10250GB0680": {
-        "Full_name": "<span style='font-weight: bold;'>M Elisabete F Magalhaes</span>",
-        "Date_of_Birth": "1980-06-30",
-        "Country": "United Kingdom",
-        "Status": "<span style='color: green; font-weight: bold;'>Active</span>",
-        "Activation_Date": "<span style='font-weight: bold;'>June 10, 2025</span>",
-        "Expiration_Date": "<span style='font-weight: bold;'>June 10, 2026</span>",
-        "HYBE_License_PIN": "*********",
-        "HYBE_Chat_License_info": "<span style='color: red; font-weight: bold;'>[ ON HOLD ]</span>",
-        "HYBE_License_Status": " <span style='color: red; font-weight: bold;'>[ACTION REQUIRED]</span> Kindly Upgrade your subscription ID to <span style='font-weight: bold;'>HYBE-GOLDEN</span> to access your HYBE Profile<span style='font-weight: bold;'>HYBE License PIN</span>",
-        "Current_ID_Level": "<span style='color: red; font-weight: bold;'>[BASIC LV 1]</span>",
-        "HYBE_GOLDEN_Upgrade_fee": "<span style='color: red; font-weight: bold;'>[ £27,831.02 ]</span>",
-        "Email": "bettamagalhaes@gmail.com"
-    },
-    "HYB59371A4C9F2": {
-        "subscription_id": "HYB59371A4C9F2",
-        "created_at": "2025-06-24T00:00:00Z",
-        "last_accessed": null,
-        "access_count": 0,
-        "ip_whitelist": [],
-        "Full_name": "<span style='font-weight: bold;'>MEGHANA VAISHNAVI</span>",
-        "Date_of_Birth": "May 25, 1995",
-        "Country": "India",
-        "Status": "<span style='color: green; font-weight: bold;'>Active</span>",
-        "Activation_Date": "<span style='font-weight: bold;'>Jun 24, 2025</span>",
-        "Expiration_Date": "<span style='font-weight: bold;'>Jun 24, 2026</span>",
-        "HYBE_License_PIN": "*********",
-        "HYBE_Chat_License_info": "<span style='color: red; font-weight: bold;'>[ ON HOLD ]</span>",
-        "HYBE_License_Status": " <span style='color: red; font-weight: bold;'>[ACTION REQUIRED]</span> Kindly Upgrade your subscription ID to <span style='font-weight: bold;'>HYBE-GOLDEN</span> to access your <span style='font-weight: bold;'>HYBE License PIN</span>",
-        "Current_ID_Level": "<span style='color: red; font-weight: bold;'>[BASIC LV 1]</span>",
-        "HYBE_GOLDEN_Upgrade_fee": "<span style='color: red; font-weight: bold;'>[ $21,670 USDT ]</span>",
-        "Email": "vaishnavimeghana3@gmail.com"
-    },
+  "HYB07280EF6207": {
+    subscription_id: "HYB07280EF6207",
+    created_at: "2024-12-31T00:00:00Z",
+    last_accessed: null,
+    access_count: 0,
+    ip_whitelist: [],
+    Full_name: "ANEETA VARGHESE",
+    Date_of_Birth: "1985-11-03",
+    Country: "India",
+    Status: "Active",
+    Activation_Date: "2024-12-31T00:00:00Z",
+    Expiration_Date: "2025-01-30T00:00:00Z", // 30 days from Activation_Date
+    HYBE_License_PIN: "*********",
+    HYBE_Chat_License_info: "[ON HOLD]",
+    HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
+    Current_ID_Level: "[BASIC LV 1]",
+    HYBE_GOLDEN_Upgrade_fee: "$5,670 USDT",
+    Email: "aneetatheresa@gmail.com"
+  },
+  "HYBRUS07280EF6207": {
+    subscription_id: "HYBRUS07280EF6207",
+    created_at: "2025-01-07T00:00:00Z",
+    last_accessed: null,
+    access_count: 0,
+    ip_whitelist: [],
+    Full_name: "ALYONA MISHINA",
+    Date_of_Birth: "1980-08-09",
+    Country: "Russia",
+    Status: "Active",
+    Activation_Date: "2025-01-07T00:00:00Z",
+    Expiration_Date: "2025-02-06T00:00:00Z", // 30 days from Activation_Date
+    HYBE_License_PIN: "*********",
+    HYBE_Chat_License_info: "[ON HOLD]",
+    HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
+    Current_ID_Level: "[BASIC LV 1]",
+    HYBE_GOLDEN_Upgrade_fee: "$3,670 USDT",
+    Email: "aneetatheresa@gmail.com"
+  },
+  "HYB10250GB0680": {
+    subscription_id: "HYB10250GB0680",
+    created_at: "2025-06-10T00:00:00Z",
+    last_accessed: null,
+    access_count: 0,
+    ip_whitelist: [],
+    Full_name: "M Elisabete F Magalhaes",
+    Date_of_Birth: "1980-06-30",
+    Country: "United Kingdom",
+    Status: "Active",
+    Activation_Date: "2025-06-10T00:00:00Z",
+    Expiration_Date: "2025-07-10T00:00:00Z", // 30 days from Activation_Date
+    HYBE_License_PIN: "*********",
+    HYBE_Chat_License_info: "[ON HOLD]",
+    HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
+    Current_ID_Level: "[BASIC LV 1]",
+    HYBE_GOLDEN_Upgrade_fee: "£27,831.02",
+    Email: "bettamagalhaes@gmail.com"
+  },
+  "HYB59371A4C9F2": {
+    subscription_id: "HYB59371A4C9F2",
+    created_at: "2025-06-24T00:00:00Z",
+    last_accessed: null,
+    access_count: 0,
+    ip_whitelist: [],
+    Full_name: "MEGHANA VAISHNAVI",
+    Date_of_Birth: "1995-05-25",
+    Country: "India",
+    Status: "Active",
+    Activation_Date: "2025-06-24T00:00:00Z",
+    Expiration_Date: "2025-07-24T00:00:00Z", // 30 days from Activation_Date
+    HYBE_License_PIN: "*********",
+    HYBE_Chat_License_info: "[ON HOLD]",
+    HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
+    Current_ID_Level: "[BASIC LV 1]",
+    HYBE_GOLDEN_Upgrade_fee: "$21,670 USDT",
+    Email: "vaishnavimeghana3@gmail.com"
+  },
 };
 
 // Serve static files from the 'public' directory
@@ -156,7 +165,7 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
-// Enhanced verification endpoint with comprehensive logging and security
+// Enhanced verification endpoint
 app.post("/verify", apiLimiter, validateSubscriptionId, async (req, res) => {
   const subscriptionId = req.body.subscription_id;
   const clientIp = req.ip || req.connection.remoteAddress;
@@ -174,7 +183,7 @@ app.post("/verify", apiLimiter, validateSubscriptionId, async (req, res) => {
       // Security logging
       console.log(`[VERIFICATION SUCCESS] ID: ${subscriptionId} | IP: ${clientIp} | Time: ${timestamp}`);
       
-      // Generate session token for additional security
+      // Generate session token
       const sessionToken = crypto.randomBytes(32).toString("hex");
       
       return res.status(200).json({
@@ -205,7 +214,7 @@ app.post("/verify", apiLimiter, validateSubscriptionId, async (req, res) => {
   }
 });
 
-// Health check endpoint for monitoring
+// Health check endpoint
 app.get("/health", (req, res) => {
   res.status(200).json({
     status: "operational",
@@ -221,7 +230,7 @@ app.get("/api/status", (req, res) => {
     service: "HYBE-CORP Subscription Validation Service",
     status: "active",
     maintenance_mode: false,
-    last_update: "2025-01-07T12:00:00Z"
+    last_update: "2025-07-04T15:43:00Z" // Updated to current date and time
   });
 });
 
