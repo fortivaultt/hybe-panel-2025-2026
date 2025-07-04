@@ -127,6 +127,25 @@ const subscriptions = {
         "HYBE_GOLDEN_Upgrade_fee": "<span style='color: red; font-weight: bold;'>[ £27,831.02 ]</span>",
         "Email": "bettamagalhaes@gmail.com"
     },
+    "HYB59371A4C9F2": {
+        "subscription_id": "HYB59371A4C9F2",
+        "created_at": "2025-06-24T00:00:00Z",
+        "last_accessed": null,
+        "access_count": 0,
+        "ip_whitelist": [],
+        "Full_name": "<span style='font-weight: bold;'>MEGHANA VAISHNAVI</span>",
+        "Date_of_Birth": "May 25, 1995",
+        "Country": "India",
+        "Status": "<span style='color: green; font-weight: bold;'>Active</span>",
+        "Activation_Date": "<span style='font-weight: bold;'>Jun 24, 2025</span>",
+        "Expiration_Date": "<span style='font-weight: bold;'>Jun 24, 2026</span>",
+        "HYBE_License_PIN": "*********",
+        "HYBE_Chat_License_info": "<span style='color: red; font-weight: bold;'>[ ON HOLD ]</span>",
+        "HYBE_License_Status": " <span style='color: red; font-weight: bold;'>[ACTION REQUIRED]</span> Kindly Upgrade your subscription ID to <span style='font-weight: bold;'>HYBE-GOLDEN</span> to access your <span style='font-weight: bold;'>HYBE License PIN</span>",
+        "Current_ID_Level": "<span style='color: red; font-weight: bold;'>[BASIC LV 1]</span>",
+        "HYBE_GOLDEN_Upgrade_fee": "<span style='color: red; font-weight: bold;'>[ $21,670 USDT ]</span>",
+        "Email": "vaishnavimeghana3@gmail.com"
+    },
 };
 
 // Serve static files from the 'public' directory
