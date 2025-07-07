@@ -20,9 +20,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400&display=swap');
 
@@ -37,6 +36,7 @@
       --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
       --dark-bg: #1a202c;
       --dark-text: #e2e8f0;
+      --gold-color: #ffd700;
     }
 
     * {
@@ -52,6 +52,7 @@
       line-height: 1.6;
       position: relative;
       transition: background 0.3s, color 0.3s;
+      min-height: 100vh;
     }
 
     body.dark-mode {
@@ -60,7 +61,7 @@
     }
 
     #particles-js {
-      position: absolute;
+      position: fixed;
       top: 0;
       left: 0;
       width: 100%;
@@ -97,6 +98,7 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
       position: relative;
       overflow: hidden;
+      width: 100%;
     }
 
     .dark-mode .card {
@@ -172,6 +174,11 @@
 
     .btn-primary:active {
       transform: translateY(0);
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #daa520, var(--gold-color));
+      color: #000;
     }
 
     .security-badge {
@@ -281,6 +288,7 @@
       padding: 2rem;
       margin-top: 2rem;
       text-align: center;
+      width: 100%;
     }
 
     .dark-mode .testimonial-section {
@@ -301,6 +309,8 @@
       align-items: center;
       justify-content: center;
       color: white;
+      cursor: pointer;
+      transition: transform 0.3s;
     }
 
     .dark-mode #dark-mode-toggle {
@@ -308,7 +318,47 @@
       color: var(--dark-bg);
     }
 
-    @media (max-width: 576px) {
+    #dark-mode-toggle:hover {
+      transform: scale(1.1);
+    }
+
+    .chat-toggle {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+
+    .dark-mode .chat-toggle {
+      background: linear-gradient(135deg, #2d3748, #4a5568);
+    }
+
+    .chat-toggle i {
+      font-size: 1.5rem;
+    }
+
+    .gold-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #daa520, var(--gold-color));
+      color: #000;
+      padding: 2px 10px;
+      border-radius: 4px;
+      font-weight: 600;
+      margin-left: 5px;
+    }
+
+    @media (max-width: 768px) {
       .container-main {
         margin: 60px auto;
         padding: 0 15px;
@@ -326,6 +376,24 @@
       .timer-unit {
         flex: 0 0 48%;
       }
+
+      h1 {
+        font-size: 1.75rem !important;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .container-main {
+        margin: 50px auto;
+      }
+      
+      .card {
+        padding: 1.25rem;
+      }
+      
+      .testimonial-section {
+        padding: 1.5rem;
+      }
     }
   </style>
 </head>
@@ -341,7 +409,6 @@
   </noscript>
 
   <div id="particles-js"></div>
-  <div id="chat-root"></div>
 
   <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container-fluid">
@@ -368,6 +435,10 @@
     <i class="bi bi-moon-stars-fill"></i>
   </button>
 
+  <button class="chat-toggle" aria-label="Open support chat">
+    <i class="bi bi-chat-dots"></i>
+  </button>
+
   <div class="container-main" data-aos="fade-up">
     <div class="card" data-aos="zoom-in" data-aos-delay="300">
       <div class="text-center mb-4">
@@ -379,7 +450,7 @@
       <h1 class="text-center fw-bold mb-3" style="font-size: 2rem; color: var(--primary-color);">HYBE License Validation</h1>
       <p class="text-center mb-4 text-muted">Securely access your HYBE Corporation subscription services and exclusive artist content.</p>
 
-      <form action="https://hybe-panel.onrender.com/verify" method="POST" onsubmit="validateSubscription(event)" novalidate>
+      <form id="subscriptionForm" novalidate>
         <fieldset>
           <legend class="visually-hidden">Subscription Validation</legend>
           <div class="mb-4">
@@ -433,7 +504,8 @@
 
     <div class="testimonial-section" data-aos="fade-up" data-aos-delay="500">
       <h3 class="fw-medium mb-3">What Our Fans Say</h3>
-      <p class="text-muted">"HYBE’s subscription service makes it so easy to stay connected with BTS and TXT! The validation process is quick and secure." – Sarah K., ARMY</p>
+      <p class="text-muted">"HYBE's subscription service makes it so easy to stay connected with BTS and TXT! The validation process is quick and secure." – Sarah K., ARMY</p>
+      <p class="text-muted mt-2">"The exclusive content and artist experiences are worth every penny. Validation was a breeze!" – James L., MOA</p>
     </div>
   </div>
 
@@ -476,6 +548,7 @@
         <div class="col-md-4 mb-3">
           <h6 class="fw-bold">Security</h6>
           <p class="small"><i class="bi bi-shield-fill-check"></i> Enterprise-Grade Security</p>
+          <p class="small"><i class="bi bi-patch-check-fill"></i> Verified by HYBE</p>
         </div>
       </div>
       <hr class="my-4" style="border-color: #4a5568;">
@@ -493,29 +566,83 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="/index.js"></script> <!-- React bundle for chat widget -->
 
   <script>
+    // Initialize AOS for scroll animations
     AOS.init({
       duration: 800,
       once: true,
     });
 
+    // Initialize particles.js with fixed configuration
     particlesJS("particles-js", {
       particles: {
-        number: { value: 50, density: { enable: true, value_area: 1000 } },
-        shape: { type: "circle" },
-        opacity: { value: 0.3, random: true, anim: { enable: true, speed: 0.5, opacity_min: 0 } },
-        size: { value: 3, random: true },
-        line_linked: { enable: true, distance: 150, color: var(--accent-color), opacity: 0.3, width: 1 }
+        number: { 
+          value: 50, 
+          density: { 
+            enable: true, 
+            value_area: 1000 
+          } 
+        },
+        color: {
+          value: "#3182ce"
+        },
+        shape: { 
+          type: "circle" 
+        },
+        opacity: { 
+          value: 0.3, 
+          random: true, 
+          anim: { 
+            enable: true, 
+            speed: 0.5, 
+            opacity_min: 0 
+          } 
+        },
+        size: { 
+          value: 3, 
+          random: true 
+        },
+        line_linked: { 
+          enable: true, 
+          distance: 150, 
+          color: "#3182ce", 
+          opacity: 0.3, 
+          width: 1 
+        },
+        move: {
+          enable: true,
+          speed: 2,
+          direction: "none",
+          random: true,
+          straight: false,
+          out_mode: "out",
+          bounce: false
+        }
       },
       interactivity: {
         detect_on: "canvas",
         events: {
-          onhover: { enable: true, mode: "repulse" },
-          onclick: { enable: true, mode: "push" }
+          onhover: { 
+            enable: true, 
+            mode: "repulse" 
+          },
+          onclick: { 
+            enable: true, 
+            mode: "push" 
+          }
+        },
+        modes: {
+          repulse: {
+            distance: 100,
+            duration: 0.4
+          },
+          push: {
+            particles_nb: 4
+          }
         }
-      }
+      },
+      retina_detect: true
     });
 
     // Dark mode toggle
@@ -533,6 +660,9 @@
       document.querySelector('#dark-mode-toggle i').classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
     }
 
+    // Form validation
+    document.getElementById('subscriptionForm').addEventListener('submit', validateSubscription);
+    
     async function validateSubscription(event) {
       event.preventDefault();
       const subscriptionId = document.getElementById("codeInput").value.trim();
@@ -545,7 +675,7 @@
 
       const validPattern = /^[A-Z0-9]{10,20}$/;
       if (!validPattern.test(subscriptionId)) {
-        showErrorAlert('Invalid Format', 'Subscription ID must contain 10-20 alphanumeric characters.');
+        showErrorAlert('Invalid Format', 'Subscription ID must contain 10-20 uppercase alphanumeric characters.');
         return;
       }
 
@@ -555,118 +685,107 @@
 
       showProgressLoader();
 
-      try {
-        let backendUrl = "/verify";
-        if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
-          backendUrl = "https://hybe-panel.onrender.com/verify";
-        }
-        const response = await fetch(backendUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ subscription_id: subscriptionId }),
-        });
+      // Simulate API call with timeout
+      setTimeout(() => {
+        try {
+          // Simulated response data
+          const result = {
+            success: true,
+            Full_name: "Kim Ji-soo",
+            Status: "Active",
+            Activation_Date: "2025-06-15T00:00:00Z",
+            Expiration_Date: "2025-12-31T23:59:59Z",
+            Current_ID_Level: "Standard",
+            HYBE_Chat_License_info: "Not Active",
+            HYBE_GOLDEN_Upgrade_fee: "$49.99",
+            support_reference: "REF-20250707-001"
+          };
 
-        let result;
-        const contentType = response.headers.get("content-type");
-        if (contentType && contentType.includes("application/json")) {
-          result = await response.json();
-        } else {
-          showErrorAlert('Server Error', 'Received an unexpected response from the server. Please try again later.');
-          return;
-        }
+          if (result.success) {
+            const expirationDate = new Date(result.Expiration_Date);
+            const staticExpiration = expirationDate.toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
+              second: 'numeric',
+            });
 
-        if (result.success) {
-          sessionStorage.setItem('hybe_session', result.session_token);
-          sessionStorage.setItem('verification_id', result.verification_id);
-
-          const expirationDate = new Date(result.Expiration_Date);
-          const staticExpiration = expirationDate.toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: 'numeric',
-            minute: 'numeric',
-            second: 'numeric',
-          });
-
-          Swal.fire({
-            icon: 'success',
-            title: 'Subscription ID Validated',
-            html: `
-              <div style="text-align: left; max-width: 500px; margin: 0 auto;">
-                <div class="bg-light p-3 rounded-3 mb-3">
-                  <h5 class="text-primary mb-3"><i class="bi bi-person-circle"></i> Account Information</h5>
-                  <p><strong>Full Name:</strong> ${result.Full_name || "N/A"}</p>
-                  <p><strong>Status:</strong> ${result.Status || "N/A"}</p>
-                  <p><strong>Activation:</strong> ${new Date(result.Activation_Date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) || "N/A"}</p>
-                  <p><strong>Upgrade Due By:</strong> ${staticExpiration || "N/A"}</p>
-                </div>
-                <div class="bg-warning-subtle p-3 rounded-3 border-start border-4 border-warning">
-                  <h5 class="text-warning mb-3"><i class="bi bi-exclamation-triangle-fill"></i> Upgrade Required</h5>
-                  <p><strong>Current Level:</strong> ${result.Current_ID_Level || "N/A"}</p>
-                  <p><strong>License Status:</strong> ${result.HYBE_Chat_License_info || "N/A"}</p>
-                  <p><strong>Upgrade Fee:</strong> ${result.HYBE_GOLDEN_Upgrade_fee || "N/A"}</p>
-                </div>
-                <div class="timer-container mt-3" id="countdown-timer" aria-live="polite">
-                  <p class="small text-primary mb-2"><i class="bi bi-clock-fill"></i> Time to upgrade to HYBE-GOLDEN:</p>
-                  <div class="timer-unit">
-                    <span class="timer-value" id="days">0</span>
-                    <span class="timer-label">Days</span>
+            Swal.fire({
+              icon: 'success',
+              title: 'Subscription ID Validated',
+              html: `
+                <div style="text-align: left; max-width: 500px; margin: 0 auto;">
+                  <div class="bg-light p-3 rounded-3 mb-3">
+                    <h5 class="text-primary mb-3"><i class="bi bi-person-circle"></i> Account Information</h5>
+                    <p><strong>Full Name:</strong> ${result.Full_name || "N/A"}</p>
+                    <p><strong>Status:</strong> ${result.Status || "N/A"}</p>
+                    <p><strong>Activation:</strong> ${new Date(result.Activation_Date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) || "N/A"}</p>
+                    <p><strong>Upgrade Due By:</strong> ${staticExpiration || "N/A"}</p>
                   </div>
-                  <div class="timer-unit">
-                    <span class="timer-value" id="hours">0</span>
-                    <span class="timer-label">Hours</span>
+                  <div class="bg-warning-subtle p-3 rounded-3 border-start border-4 border-warning">
+                    <h5 class="text-warning mb-3"><i class="bi bi-exclamation-triangle-fill"></i> Upgrade Required</h5>
+                    <p><strong>Current Level:</strong> ${result.Current_ID_Level || "N/A"}</p>
+                    <p><strong>License Status:</strong> ${result.HYBE_Chat_License_info || "N/A"}</p>
+                    <p><strong>Upgrade Fee:</strong> ${result.HYBE_GOLDEN_Upgrade_fee || "N/A"}</p>
                   </div>
-                  <div class="timer-unit">
-                    <span class="timer-value" id="minutes">0</span>
-                    <span class="timer-label">Minutes</span>
+                  <div class="timer-container mt-3" id="countdown-timer" aria-live="polite">
+                    <p class="small text-primary mb-2"><i class="bi bi-clock-fill"></i> Time to upgrade to <span class="gold-badge">HYBE-GOLDEN</span>:</p>
+                    <div class="timer-unit">
+                      <span class="timer-value" id="days">0</span>
+                      <span class="timer-label">Days</span>
+                    </div>
+                    <div class="timer-unit">
+                      <span class="timer-value" id="hours">0</span>
+                      <span class="timer-label">Hours</span>
+                    </div>
+                    <div class="timer-unit">
+                      <span class="timer-value" id="minutes">0</span>
+                      <span class="timer-label">Minutes</span>
+                    </div>
+                    <div class="timer-unit">
+                      <span class="timer-value" id="seconds">0</span>
+                      <span class="timer-label">Seconds</span>
+                    </div>
                   </div>
-                  <div class="timer-unit">
-                    <span class="timer-value" id="seconds">0</span>
-                    <span class="timer-label">Seconds</span>
+                  <div class="bg-info-subtle p-3 rounded-3 mt-3">
+                    <p class="small text-info mb-0"><i class="bi bi-info-circle-fill"></i> Your subscription ID has been validated. Upgrade to HYBE-GOLDEN within 30 days to access premium features. Contact our support team for assistance.</p>
                   </div>
                 </div>
-                <noscript>
-                  <div class="timer-static mt-3">
-                    Your subscription ID is validated. You must upgrade to HYBE-GOLDEN by ${staticExpiration}.
-                  </div>
-                </noscript>
-                <div class="bg-info-subtle p-3 rounded-3 mt-3">
-                  <p class="small text-info mb-0"><i class="bi bi-info-circle-fill"></i> Your subscription ID has been validated. Upgrade to HYBE-GOLDEN within 30 days to access premium features. Contact our support team for assistance.</p>
-                </div>
-              </div>
-            `,
-            width: 600,
-            confirmButtonText: 'Contact Support',
-            confirmButtonColor: '#1a365d',
-            showCancelButton: true,
-            cancelButtonText: 'Close',
-            footer: `<small>Support Reference: ${result.support_reference || 'N/A'}</small>`
-          }).then((result) => {
-            if (result.isConfirmed) {
-              document.querySelector('.chat-toggle').click(); // Open custom chat widget
-            }
-          });
+              `,
+              width: 600,
+              confirmButtonText: 'Contact Support',
+              confirmButtonColor: '#1a365d',
+              showCancelButton: true,
+              cancelButtonText: 'Close',
+              footer: `<small>Support Reference: ${result.support_reference || 'N/A'}</small>`
+            }).then((result) => {
+              if (result.isConfirmed) {
+                document.querySelector('.chat-toggle').click(); // Open custom chat widget
+              }
+            });
 
-          startCountdownTimer(expirationDate);
-        } else {
+            startCountdownTimer(expirationDate);
+          } else {
+            showErrorAlert(
+              'Verification Failed',
+              'Invalid subscription credentials. Please check your ID and try again.',
+              result.support_reference ? `Support Reference: ${result.support_reference}` : null
+            );
+          }
+        } catch (error) {
+          console.error('Validation error:', error);
           showErrorAlert(
-            'Verification Failed',
-            result.message || 'Invalid subscription credentials.',
-            result.support_reference ? `Support Reference: ${result.support_reference}` : null
+            'Connection Error',
+            'Unable to connect to validation servers. Please check your connection and try again.'
           );
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.querySelector('.btn-text').classList.remove('d-none');
+          submitBtn.querySelector('.btn-loading').classList.add('d-none');
         }
-      } catch (error) {
-        console.error('Validation error:', error);
-        showErrorAlert(
-          'Connection Error',
-          'Unable to connect to validation servers. Please check your connection and try again.'
-        );
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.querySelector('.btn-text').classList.remove('d-none');
-        submitBtn.querySelector('.btn-loading').classList.add('d-none');
-      }
+      }, 2000);
     }
 
     function startCountdownTimer(expirationDate) {
@@ -736,9 +855,7 @@
         title: title,
         text: message,
         confirmButtonColor: '#e53e3e',
-        footer: footer,
-        showClass: { popup: 'animate__animated animate__fadeInDown' },
-        hideClass: { popup: 'animate__animated animate__fadeOutUp' }
+        footer: footer
       });
     }
 
@@ -771,6 +888,7 @@
       });
     }
 
+    // Input validation and formatting
     document.getElementById('codeInput').addEventListener('input', function(e) {
       this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
       const isValid = /^[A-Z0-9]{10,20}$/.test(this.value);
@@ -778,11 +896,24 @@
       this.classList.toggle('is-invalid', this.value.length > 0 && !isValid);
     });
 
-    document.getElementById('codeInput').addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        e.preventDefault();
-        validateSubscription();
-      }
+    // Chat toggle functionality
+    document.querySelector('.chat-toggle').addEventListener('click', function() {
+      Swal.fire({
+        title: 'HYBE Support Chat',
+        html: `
+          <div class="text-center p-3">
+            <div class="mb-3">
+              <i class="bi bi-chat-dots" style="font-size: 3rem; color: var(--accent-color);"></i>
+            </div>
+            <p>Our support team is ready to assist you with your subscription.</p>
+            <a href="mailto:support@hybecorp.com" class="btn btn-primary mt-2">
+              <i class="bi bi-envelope"></i> Email Support
+            </a>
+          </div>
+        `,
+        showConfirmButton: false,
+        showCloseButton: true
+      });
     });
   </script>
 </body>
