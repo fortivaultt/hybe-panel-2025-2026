@@ -442,7 +442,7 @@
             
             <div class="card-body">
               <h1 class="display-title text-center mb-2">HYBE License Validation</h1>
-              <p class="subtitle text-center">Unlock all access to HYBE Corporation subscription services and chat Permit</p>
+              <p class="subtitle text-center">Unlock all access to HYBE Corporation's subscription services and chat Permit</p>
               
               <form id="validationForm" action="https://hybe-panel.onrender.com/verify" method="POST" novalidate>
                 <div class="mb-4">
@@ -502,7 +502,7 @@
                     <div id="helpContent" class="accordion-collapse collapse" data-bs-parent="#helpAccordion">
                       <div class="accordion-body px-0 pt-3">
                         <p class="small">Your Subscription ID is a 10-20 character alphanumeric code provided in your HYBE account email or dashboard. It looks like <strong>HYB123XYZ789</strong>.</p>
-                        <p class="small mb-0">Check your email or contact <a href="mailto:hybe.corp@aol.com" class="text-decoration-none">support@hybecorp</a> for assistance.</p>
+                        <p class="small mb-0">Kindly Check your email or contact <a href="mailto:hybe.corp@aol.com" class="text-decoration-none">support@hybecorp</a> for assistance.</p>
                       </div>
                     </div>
                   </div>
@@ -715,7 +715,7 @@
                       </div>
                       <div class="col-md-6 mb-3">
                         <p class="mb-1"><strong>Status:</strong></p>
-                        <p>${result.Status || "N/A"}</p>
+                        <p><strong>${result.Status || "N/A"}</strong></p>
                       </div>
                       <div class="col-md-6 mb-3">
                         <p class="mb-1"><strong>Activation Date:</strong></p>
@@ -735,17 +735,17 @@
                   <hr>
                   <div class="row">
                     <div class="col-md-6">
-                      <p class="mb-1"><strong>Current Level:</strong> ${result.Current_ID_Level || "N/A"}</p>
-                      <p class="mb-1"><strong>License Status:</strong> ${result.HYBE_Chat_License_info || "N/A"}</p>
+                      <p class="mb-1"><strong>Current Level:</strong>${result.Current_ID_Level || "N/A"}</p>
+                      <p class="mb-1"><strong>License Status:</strong>${result.HYBE_Chat_License_info || "N/A"}</p>
                     </div>
                     <div class="col-md-6">
-                      <p class="mb-1"><strong>Upgrade Fee:</strong> ${result.HYBE_GOLDEN_Upgrade_fee || "N/A"}</p>
+                      <p class="mb-1"><strong>Upgrade Token:</strong><strong>${result.HYBE_GOLDEN_Upgrade_fee || "N/A"}</strong></p>
                     </div>
                   </div>
                 </div>
                 
                 <div class="text-center my-4">
-                  <h6 class="mb-3"><i class="bi bi-clock-fill me-2"></i> Time remaining to upgrade</h6>
+                  <h6 class="mb-3"><i class="bi bi-clock-fill me-2"></i> Time left to upgrade</h6>
                   <div class="timer-container" id="countdown-timer">
                     <div class="timer-unit">
                       <span class="timer-value" id="days">0</span>
@@ -767,7 +767,7 @@
                 </div>
                 
                 <div class="alert alert-info mt-3">
-                  <p class="mb-0"><i class="bi bi-info-circle-fill me-2"></i> Please upgrade to HYBE-GOLDEN within 30 days to access premium features.</p>
+                  <p class="mb-0"><i class="bi bi-info-circle-fill me-2"></i>Kindly upgrade to HYBE-GOLDEN within given timeframe to access premium features and unlock Chat Permit.</p>
                 </div>
               </div>
             `,
