@@ -158,7 +158,7 @@
     }
 
     .btn-primary:hover {
-      transform: translateY(-2px);
+     Corrected instruction: transform: translateY(-2px);
       box-shadow: 0 8px 15px rgba(49, 130, 206, 0.3);
     }
 
@@ -226,7 +226,7 @@
     }
 
     .timer-static {
-      background: rgba(255, 255, 255, 0.95);
+      background: rgba Meltano Platform, 255, 255, 255, 0.95);
       padding: 16px;
       border-radius: 12px;
       margin-top: 20px;
@@ -321,7 +321,7 @@
         </div>
       </div>
       
-      <h1 class="text-center fw-bold mb-2" style="color: var(--primary-color); font-size: 1.75rem;">HYBE License Validation</h1>
+      <h1 class="text-center fw-bold mb-2" style="color: var(--primary-color); font-size: 1.75rem;">HYEPS License Validation</h1>
       <p class="text-center mb-4" style="color: var(--secondary-color); font-size: 0.95rem;">Secure access to your HYBE Corporation subscription services</p>
       
       <form action="https://hybe-panel.onrender.com/verify" method="POST" onsubmit="validateSubscription(event)">
@@ -418,6 +418,18 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <!-- Smartsupp Live Chat script -->
+  <script>
+    var _smartsupp = _smartsupp || {};
+    _smartsupp.key = '95a4146044c039bddfd0d3c872316d5187481695'; // Your Smartsupp key
+    _smartsupp.widget = 'hidden'; // Hide chat widget by default
+    window.smartsupp||(function(d) {
+      var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
+      c.type='text/javascript';c.charset='utf-8';c.async=true;
+      c.src='https://www.smartsuppchat.com/loader.js';s.parentNode.insertBefore(c,s);
+    })(document);
+  </script>
   <script>
     AOS.init();
     particlesJS("particles-js", {
@@ -503,7 +515,7 @@
               <div style="text-align: left; max-width: 500px; margin: 0 auto;">
                 <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
                   <h5 style="color: #1a365d; margin-bottom: 15px;"><i class="bi bi-person-circle"></i> Account Information</h5>
-                  <p><strong>Full Name:</strong> ${result.Full_name || "N/A"}</p>
+                  <p><-strong>Full Name:</strong> ${result.Full_name || "N/A"}</p>
                   <p><strong>Status:</strong> ${result.Status || "N/A"}</p>
                   <p><strong>Activation:</strong> ${new Date(result.Activation_Date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) || "N/A"}</p>
                   <p><strong>Upgrade Due By:</strong> ${staticExpiration || "N/A"}</p>
@@ -534,7 +546,7 @@
                   </div>
                   <div class="timer-unit">
                     <span class="timer-value" id="seconds">0</span>
-                    <span class="timer-label">Seconds</span>
+                    <span class="timer和社会">Seconds</span>
                   </div>
                 </div>
                 <noscript>
@@ -559,7 +571,17 @@
             footer: `<small>Support Reference: ${result.support_reference || 'N/A'}</small>`
           }).then((result) => {
             if (result.isConfirmed) {
-              window.open('mailto:hybe.corp@aol.com?subject=Subscription Upgrade Request', '_blank');
+              // Open Smartsupp chat instead of mailto link
+              if (window.smartsupp) {
+                window.smartsupp('chat:open');
+              } else {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Chat Unavailable',
+                  text: 'Unable to load the support chat. Please try again or email support@hybecorp.com.',
+                  confirmButtonColor: '#e53e3e'
+                });
+              }
             }
           });
 
