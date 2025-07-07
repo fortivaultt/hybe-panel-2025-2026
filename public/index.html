@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <meta name="description" content="HYBE-CORP Subscription Validation - Securely access premium content and exclusive artist experiences.">
   <meta name="author" content="HYBE CORP">
   <meta name="robots" content="index, follow">
@@ -16,15 +16,20 @@
   <meta name="twitter:description" content="Validate your HYBE Corporation subscription to unlock premium content and connect with your favorite artists.">
   <meta name="twitter:image" content="https://logotyp.us/file/hybe.svg">
   <title>HYBE-CORP: Subscription Validation</title>
+  <!-- Preconnect to CDNs for better performance -->
+  <link rel="preconnect" href="https://cdn.jsdelivr.net">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  
+  <!-- CSS with fallbacks -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400&display=swap" rel="stylesheet">
+  
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400&display=swap');
-
     :root {
       --primary-color: #1a365d;
       --secondary-color: #2d3748;
@@ -53,6 +58,7 @@
       position: relative;
       transition: background 0.3s, color 0.3s;
       min-height: 100vh;
+      padding-top: 80px; /* Space for fixed navbar */
     }
 
     body.dark-mode {
@@ -81,8 +87,8 @@
 
     .container-main {
       max-width: 600px;
-      margin: 80px auto;
-      padding: 0 20px;
+      margin: 0 auto;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -99,6 +105,7 @@
       position: relative;
       overflow: hidden;
       width: 100%;
+      margin-bottom: 2rem;
     }
 
     .dark-mode .card {
@@ -117,287 +124,48 @@
       border-radius: 16px 16px 0 0;
     }
 
-    .form-control {
-      border: 2px solid #e2e8f0;
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-family: 'Roboto Mono', monospace;
-      font-size: 1rem;
-      transition: border-color 0.2s, box-shadow 0.2s;
-    }
+    /* ... (keep all your existing styles, just adding key fixes below) ... */
 
-    .dark-mode .form-control {
-      background: #2d3748;
-      color: var(--dark-text);
-      border-color: #4a5568;
-    }
-
-    .form-control:focus {
-      border-color: var(--accent-color);
-      box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.2);
-      outline: none;
-    }
-
-    .form-control.is-valid {
-      border-color: var(--success-color);
-      background: rgba(56, 161, 105, 0.1);
-    }
-
-    .form-control.is-invalid {
-      border-color: var(--error-color);
-      background: rgba(229, 62, 62, 0.1);
-    }
-
-    .form-text {
-      font-size: 0.85rem;
-      color: var(--secondary-color);
-    }
-
-    .dark-mode .form-text {
-      color: var(--dark-text);
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-      border: none;
-      border-radius: 10px;
-      font-size: 1rem;
-      font-weight: 600;
-      padding: 12px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 12px rgba(49, 130, 206, 0.3);
-    }
-
-    .btn-primary:active {
-      transform: translateY(0);
-    }
-
-    .btn-gold {
-      background: linear-gradient(135deg, #daa520, var(--gold-color));
-      color: #000;
-    }
-
-    .security-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(56, 161, 105, 0.1);
-      color: var(--success-color);
-      padding: 6px 12px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-
-    .timer-container {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      background: rgba(255, 255, 255, 0.95);
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid var(--accent-color);
-      text-align: center;
-    }
-
-    .dark-mode .timer-container {
-      background: rgba(45, 55, 72, 0.95);
-    }
-
-    .timer-unit {
-      flex: 1;
-    }
-
-    .timer-value {
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--primary-color);
-    }
-
-    .dark-mode .timer-value {
-      color: var(--dark-text);
-    }
-
-    .timer-label {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      color: var(--secondary-color);
-    }
-
-    .dark-mode .timer-label {
-      color: var(--dark-text);
-    }
-
-    .timer-static {
-      background: rgba(255, 255, 255, 0.95);
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid var(--accent-color);
-      color: var(--primary-color);
-      font-weight: 500;
-      text-align: center;
-    }
-
-    .dark-mode .timer-static {
-      background: rgba(45, 55, 72, 0.95);
-      color: var(--dark-text);
-    }
-
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .animate {
-      animation: fadeInUp 0.3s ease-in-out;
-    }
-
-    footer {
-      background: var(--primary-color);
-      color: white;
-      padding: 2rem 0;
-      margin-top: 3rem;
-    }
-
-    .dark-mode footer {
-      background: #2d3748;
-    }
-
-    footer a {
-      color: #ffd700;
-      text-decoration: none;
-      transition: color 0.3s;
-    }
-
-    footer a:hover {
-      color: var(--accent-color);
-    }
-
-    .social-links a {
-      font-size: 1.5rem;
-      margin: 0 10px;
-    }
-
-    .testimonial-section {
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 16px;
-      padding: 2rem;
-      margin-top: 2rem;
-      text-align: center;
-      width: 100%;
-    }
-
-    .dark-mode .testimonial-section {
-      background: rgba(45, 55, 72, 0.95);
-    }
-
-    #dark-mode-toggle {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1000;
-      background: var(--accent-color);
-      border: none;
-      border-radius: 50%;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      cursor: pointer;
-      transition: transform 0.3s;
-    }
-
-    .dark-mode #dark-mode-toggle {
-      background: var(--dark-text);
-      color: var(--dark-bg);
-    }
-
-    #dark-mode-toggle:hover {
-      transform: scale(1.1);
-    }
-
-    .chat-toggle {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      z-index: 1000;
-      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-    }
-
-    .dark-mode .chat-toggle {
-      background: linear-gradient(135deg, #2d3748, #4a5568);
-    }
-
-    .chat-toggle i {
-      font-size: 1.5rem;
-    }
-
-    .gold-badge {
-      display: inline-block;
-      background: linear-gradient(135deg, #daa520, var(--gold-color));
-      color: #000;
-      padding: 2px 10px;
-      border-radius: 4px;
-      font-weight: 600;
-      margin-left: 5px;
-    }
-
+    /* Fix for mobile viewport */
     @media (max-width: 768px) {
-      .container-main {
-        margin: 60px auto;
-        padding: 0 15px;
+      body {
+        padding-top: 70px;
       }
-
+      
+      .container-main {
+        padding: 15px;
+      }
+      
       .card {
         padding: 1.5rem;
-      }
-
-      .timer-container {
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .timer-unit {
-        flex: 0 0 48%;
-      }
-
-      h1 {
-        font-size: 1.75rem !important;
       }
     }
 
-    @media (max-width: 480px) {
-      .container-main {
-        margin: 50px auto;
-      }
-      
-      .card {
-        padding: 1.25rem;
-      }
-      
-      .testimonial-section {
-        padding: 1.5rem;
-      }
+    /* Fallback for particles.js failure */
+    .no-particles #particles-js {
+      display: none;
+    }
+    
+    /* Debug element */
+    #debug-console {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0,0,0,0.8);
+      color: white;
+      padding: 5px;
+      font-family: monospace;
+      font-size: 12px;
+      z-index: 9999;
+      display: none; /* Enable when debugging */
     }
   </style>
 </head>
-<body>
+<body class="no-particles">
+  <!-- Debug console (enable when needed) -->
+  <div id="debug-console"></div>
+
   <noscript>
     <div class="container-main text-center mt-4">
       <div class="alert alert-danger" role="alert">
@@ -413,7 +181,7 @@
   <nav class="navbar navbar-expand-lg fixed-top">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">
-        <img src="https://logotyp.us/file/hybe.svg" alt="HYBE Logo">
+        <img src="https://logotyp.us/file/hybe.svg" alt="HYBE Logo" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyMDAgNTAiPjx0ZXh0IHg9IjEwMCIgeT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkhZQkU8L3RleHQ+PC9zdmc+';">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -563,109 +331,142 @@
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+  <!-- JavaScript with fallback loading -->
   <script>
-    // Initialize AOS for scroll animations
-    AOS.init({
-      duration: 800,
-      once: true,
-    });
-
-    // Initialize particles.js with fixed configuration
-    particlesJS("particles-js", {
-      particles: {
-        number: { 
-          value: 50, 
-          density: { 
-            enable: true, 
-            value_area: 1000 
-          } 
-        },
-        color: {
-          value: "#3182ce"
-        },
-        shape: { 
-          type: "circle" 
-        },
-        opacity: { 
-          value: 0.3, 
-          random: true, 
-          anim: { 
-            enable: true, 
-            speed: 0.5, 
-            opacity_min: 0 
-          } 
-        },
-        size: { 
-          value: 3, 
-          random: true 
-        },
-        line_linked: { 
-          enable: true, 
-          distance: 150, 
-          color: "#3182ce", 
-          opacity: 0.3, 
-          width: 1 
-        },
-        move: {
-          enable: true,
-          speed: 2,
-          direction: "none",
-          random: true,
-          straight: false,
-          out_mode: "out",
-          bounce: false
-        }
-      },
-      interactivity: {
-        detect_on: "canvas",
-        events: {
-          onhover: { 
-            enable: true, 
-            mode: "repulse" 
-          },
-          onclick: { 
-            enable: true, 
-            mode: "push" 
-          }
-        },
-        modes: {
-          repulse: {
-            distance: 100,
-            duration: 0.4
-          },
-          push: {
-            particles_nb: 4
-          }
-        }
-      },
-      retina_detect: true
-    });
-
-    // Dark mode toggle
-    document.getElementById('dark-mode-toggle').addEventListener('click', () => {
-      document.body.classList.toggle('dark-mode');
-      const icon = document.querySelector('#dark-mode-toggle i');
-      icon.classList.toggle('bi-moon-stars-fill');
-      icon.classList.toggle('bi-sun-fill');
-      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
-    });
-
-    // Load dark mode preference
-    if (localStorage.getItem('darkMode') === 'true') {
-      document.body.classList.add('dark-mode');
-      document.querySelector('#dark-mode-toggle i').classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
+    // Load critical JS first
+    function loadScript(src, integrity, crossorigin, callback) {
+      var script = document.createElement('script');
+      script.src = src;
+      if (integrity) script.integrity = integrity;
+      if (crossorigin) script.crossOrigin = crossorigin;
+      script.onload = callback;
+      script.onerror = function() {
+        console.error('Failed to load script: ' + src);
+        if (callback) callback();
+      };
+      document.head.appendChild(script);
     }
 
-    // Form validation
-    document.getElementById('subscriptionForm').addEventListener('submit', validateSubscription);
-    
+    // Load Bootstrap first as it's most critical
+    loadScript(
+      'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js',
+      'sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz',
+      'anonymous',
+      function() {
+        // Then load other libraries
+        loadScript('https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js');
+        loadScript('https://cdn.jsdelivr.net/npm/sweetalert2@11');
+        loadScript('https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js', null, null, initParticles);
+        
+        // Initialize main functionality
+        initMain();
+      }
+    );
+
+    function initParticles() {
+      if (typeof particlesJS === 'function') {
+        try {
+          particlesJS("particles-js", {
+            particles: {
+              number: { value: 50, density: { enable: true, value_area: 1000 } },
+              color: { value: "#3182ce" },
+              shape: { type: "circle" },
+              opacity: { value: 0.3, random: true, anim: { enable: true, speed: 0.5, opacity_min: 0 } },
+              size: { value: 3, random: true },
+              line_linked: { enable: true, distance: 150, color: "#3182ce", opacity: 0.3, width: 1 },
+              move: { enable: true, speed: 2, direction: "none", random: true, straight: false, out_mode: "out" }
+            },
+            interactivity: {
+              detect_on: "canvas",
+              events: {
+                onhover: { enable: true, mode: "repulse" },
+                onclick: { enable: true, mode: "push" }
+              }
+            }
+          });
+          document.body.classList.remove('no-particles');
+        } catch (e) {
+          console.error("Particles.js failed to initialize:", e);
+        }
+      }
+    }
+
+    function initMain() {
+      // Initialize AOS for scroll animations
+      if (typeof AOS !== 'undefined') {
+        AOS.init({
+          duration: 800,
+          once: true,
+        });
+      }
+
+      // Dark mode toggle
+      const darkModeToggle = document.getElementById('dark-mode-toggle');
+      if (darkModeToggle) {
+        darkModeToggle.addEventListener('click', () => {
+          document.body.classList.toggle('dark-mode');
+          const icon = darkModeToggle.querySelector('i');
+          if (icon) {
+            icon.classList.toggle('bi-moon-stars-fill');
+            icon.classList.toggle('bi-sun-fill');
+          }
+          localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+        });
+
+        // Load dark mode preference
+        if (localStorage.getItem('darkMode') === 'true') {
+          document.body.classList.add('dark-mode');
+          const icon = darkModeToggle.querySelector('i');
+          if (icon) {
+            icon.classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
+          }
+        }
+      }
+
+      // Form validation
+      const form = document.getElementById('subscriptionForm');
+      if (form) {
+        form.addEventListener('submit', validateSubscription);
+      }
+
+      // Input validation and formatting
+      const codeInput = document.getElementById('codeInput');
+      if (codeInput) {
+        codeInput.addEventListener('input', function(e) {
+          this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+          const isValid = /^[A-Z0-9]{10,20}$/.test(this.value);
+          this.classList.toggle('is-valid', isValid && this.value.length >= 10);
+          this.classList.toggle('is-invalid', this.value.length > 0 && !isValid);
+        });
+      }
+
+      // Chat toggle functionality
+      const chatToggle = document.querySelector('.chat-toggle');
+      if (chatToggle && typeof Swal !== 'undefined') {
+        chatToggle.addEventListener('click', function() {
+          Swal.fire({
+            title: 'HYBE Support Chat',
+            html: `
+              <div class="text-center p-3">
+                <div class="mb-3">
+                  <i class="bi bi-chat-dots" style="font-size: 3rem; color: var(--accent-color);"></i>
+                </div>
+                <p>Our support team is ready to assist you with your subscription.</p>
+                <a href="mailto:support@hybecorp.com" class="btn btn-primary mt-2">
+                  <i class="bi bi-envelope"></i> Email Support
+                </a>
+              </div>
+            `,
+            showConfirmButton: false,
+            showCloseButton: true
+          });
+        });
+      }
+    }
+
     async function validateSubscription(event) {
       event.preventDefault();
-      const subscriptionId = document.getElementById("codeInput").value.trim();
+      const subscriptionId = document.getElementById("codeInput")?.value.trim();
       const submitBtn = document.getElementById("validateBtn");
 
       if (!subscriptionId) {
@@ -679,9 +480,13 @@
         return;
       }
 
-      submitBtn.disabled = true;
-      submitBtn.querySelector('.btn-text').classList.add('d-none');
-      submitBtn.querySelector('.btn-loading').classList.remove('d-none');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        const btnText = submitBtn.querySelector('.btn-text');
+        const btnLoading = submitBtn.querySelector('.btn-loading');
+        if (btnText) btnText.classList.add('d-none');
+        if (btnLoading) btnLoading.classList.remove('d-none');
+      }
 
       showProgressLoader();
 
@@ -690,6 +495,7 @@
         if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
           backendUrl = "https://hybe-panel.onrender.com/verify";
         }
+        
         const response = await fetch(backendUrl, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -705,17 +511,18 @@
           return;
         }
 
-          if (result.success) {
-            const expirationDate = new Date(result.Expiration_Date);
-            const staticExpiration = expirationDate.toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              hour: 'numeric',
-              minute: 'numeric',
-              second: 'numeric',
-            });
+        if (result.success) {
+          const expirationDate = new Date(result.Expiration_Date);
+          const staticExpiration = expirationDate.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            second: 'numeric',
+          });
 
+          if (typeof Swal !== 'undefined') {
             Swal.fire({
               icon: 'success',
               title: 'Subscription ID Validated',
@@ -766,30 +573,35 @@
               footer: `<small>Support Reference: ${result.support_reference || 'N/A'}</small>`
             }).then((result) => {
               if (result.isConfirmed) {
-                document.querySelector('.chat-toggle').click(); // Open custom chat widget
+                const chatBtn = document.querySelector('.chat-toggle');
+                if (chatBtn) chatBtn.click();
               }
             });
-
-            startCountdownTimer(expirationDate);
-          } else {
-            showErrorAlert(
-              'Verification Failed',
-              'Invalid subscription credentials. Please check your ID and try again.',
-              result.support_reference ? `Support Reference: ${result.support_reference}` : null
-            );
           }
-        } catch (error) {
-          console.error('Validation error:', error);
+
+          startCountdownTimer(expirationDate);
+        } else {
           showErrorAlert(
-            'Connection Error',
-            'Unable to connect to validation servers. Please check your connection and try again.'
+            'Verification Failed',
+            'Invalid subscription credentials. Please check your ID and try again.',
+            result.support_reference ? `Support Reference: ${result.support_reference}` : null
           );
-        } finally {
-          submitBtn.disabled = false;
-          submitBtn.querySelector('.btn-text').classList.remove('d-none');
-          submitBtn.querySelector('.btn-loading').classList.add('d-none');
         }
-      }, 2000);
+      } catch (error) {
+        console.error('Validation error:', error);
+        showErrorAlert(
+          'Connection Error',
+          'Unable to connect to validation servers. Please check your connection and try again.'
+        );
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          const btnText = submitBtn.querySelector('.btn-text');
+          const btnLoading = submitBtn.querySelector('.btn-loading');
+          if (btnText) btnText.classList.remove('d-none');
+          if (btnLoading) btnLoading.classList.add('d-none');
+        }
+      }
     }
 
     function startCountdownTimer(expirationDate) {
@@ -798,6 +610,8 @@
       const minutesEl = document.getElementById('minutes');
       const secondsEl = document.getElementById('seconds');
 
+      if (!daysEl || !hoursEl || !minutesEl || !secondsEl) return;
+
       let prevDays = null, prevHours = null, prevMinutes = null, prevSeconds = null;
 
       function updateTimer() {
@@ -805,10 +619,10 @@
         const timeLeft = expirationDate - now;
 
         if (timeLeft <= 0) {
-          daysEl.textContent = '0';
-          hoursEl.textContent = '0';
-          minutesEl.textContent = '0';
-          secondsEl.textContent = '0';
+          if (daysEl) daysEl.textContent = '0';
+          if (hoursEl) hoursEl.textContent = '0';
+          if (minutesEl) minutesEl.textContent = '0';
+          if (secondsEl) secondsEl.textContent = '0';
           return;
         }
 
@@ -817,25 +631,25 @@
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-        if (days !== prevDays) {
+        if (days !== prevDays && daysEl) {
           daysEl.textContent = days;
           daysEl.classList.add('animate');
           setTimeout(() => daysEl.classList.remove('animate'), 300);
           prevDays = days;
         }
-        if (hours !== prevHours) {
+        if (hours !== prevHours && hoursEl) {
           hoursEl.textContent = hours;
           hoursEl.classList.add('animate');
           setTimeout(() => hoursEl.classList.remove('animate'), 300);
           prevHours = hours;
         }
-        if (minutes !== prevMinutes) {
+        if (minutes !== prevMinutes && minutesEl) {
           minutesEl.textContent = minutes;
           minutesEl.classList.add('animate');
           setTimeout(() => minutesEl.classList.remove('animate'), 300);
           prevMinutes = minutes;
         }
-        if (seconds !== prevSeconds) {
+        if (seconds !== prevSeconds && secondsEl) {
           secondsEl.textContent = seconds;
           secondsEl.classList.add('animate');
           setTimeout(() => secondsEl.classList.remove('animate'), 300);
@@ -854,71 +668,51 @@
     }
 
     function showErrorAlert(title, message, footer = null) {
-      Swal.fire({
-        icon: 'error',
-        title: title,
-        text: message,
-        confirmButtonColor: '#e53e3e',
-        footer: footer
-      });
+      if (typeof Swal !== 'undefined') {
+        Swal.fire({
+          icon: 'error',
+          title: title,
+          text: message,
+          confirmButtonColor: '#e53e3e',
+          footer: footer
+        });
+      } else {
+        alert(title + ": " + message);
+      }
     }
 
     function showProgressLoader() {
-      let progress = 0;
-      Swal.fire({
-        title: 'Validating ID...',
-        html: `
-          <div id="progressText" class="mb-2">Validating: <b>0%</b></div>
-          <div class="progress">
-            <div id="progressFill" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-          </div>
-        `,
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        didOpen: () => {
-          const progressText = document.getElementById('progressText');
-          const progressFill = document.getElementById('progressFill');
-          const interval = setInterval(() => {
-            if (progress < 100) {
-              progress += 2;
-              progressText.innerHTML = `Validating: <b>${progress}%</b>`;
-              progressFill.style.width = `${progress}%`;
-              progressFill.setAttribute('aria-valuenow', progress);
-            } else {
-              clearInterval(interval);
-            }
-          }, 50);
-        },
-      });
-    }
-
-    // Input validation and formatting
-    document.getElementById('codeInput').addEventListener('input', function(e) {
-      this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
-      const isValid = /^[A-Z0-9]{10,20}$/.test(this.value);
-      this.classList.toggle('is-valid', isValid && this.value.length >= 10);
-      this.classList.toggle('is-invalid', this.value.length > 0 && !isValid);
-    });
-
-    // Chat toggle functionality
-    document.querySelector('.chat-toggle').addEventListener('click', function() {
-      Swal.fire({
-        title: 'HYBE Support Chat',
-        html: `
-          <div class="text-center p-3">
-            <div class="mb-3">
-              <i class="bi bi-chat-dots" style="font-size: 3rem; color: var(--accent-color);"></i>
+      if (typeof Swal !== 'undefined') {
+        let progress = 0;
+        Swal.fire({
+          title: 'Validating ID...',
+          html: `
+            <div id="progressText" class="mb-2">Validating: <b>0%</b></div>
+            <div class="progress">
+              <div id="progressFill" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
             </div>
-            <p>Our support team is ready to assist you with your subscription.</p>
-            <a href="mailto:support@hybecorp.com" class="btn btn-primary mt-2">
-              <i class="bi bi-envelope"></i> Email Support
-            </a>
-          </div>
-        `,
-        showConfirmButton: false,
-        showCloseButton: true
-      });
-    });
+          `,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            const progressText = document.getElementById('progressText');
+            const progressFill = document.getElementById('progressFill');
+            const interval = setInterval(() => {
+              if (progress < 100) {
+                progress += 2;
+                if (progressText) progressText.innerHTML = `Validating: <b>${progress}%</b>`;
+                if (progressFill) {
+                  progressFill.style.width = `${progress}%`;
+                  progressFill.setAttribute('aria-valuenow', progress);
+                }
+              } else {
+                clearInterval(interval);
+              }
+            }, 50);
+          },
+        });
+      }
+    }
   </script>
 </body>
-</html> 
+</html>
