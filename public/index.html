@@ -685,21 +685,25 @@
 
       showProgressLoader();
 
-      // Simulate API call with timeout
-      setTimeout(() => {
-        try {
-          // Simulated response data
-          const result = {
-            success: true,
-            Full_name: "Kim Ji-soo",
-            Status: "Active",
-            Activation_Date: "2025-06-15T00:00:00Z",
-            Expiration_Date: "2025-12-31T23:59:59Z",
-            Current_ID_Level: "Standard",
-            HYBE_Chat_License_info: "Not Active",
-            HYBE_GOLDEN_Upgrade_fee: "$49.99",
-            support_reference: "REF-20250707-001"
-          };
+      try {
+        let backendUrl = "/verify";
+        if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+          backendUrl = "https://hybe-panel.onrender.com/verify";
+        }
+        const response = await fetch(backendUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ subscription_id: subscriptionId }),
+        });
+
+        let result;
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          result = await response.json();
+        } else {
+          showErrorAlert('Server Error', 'Received an unexpected response from the server. Please try again later.');
+          return;
+        }
 
           if (result.success) {
             const expirationDate = new Date(result.Expiration_Date);
