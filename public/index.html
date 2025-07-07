@@ -730,19 +730,44 @@
                 </div>
                 
                 <div class="alert alert-warning" role="alert">
-                  <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill me-2"></i> Upgrade Required</h5>
-                  <p class="mb-2"><strong>Access Denied ⚠️</strong> : Your current subscription does not include license and chat permit features. To unlock these features, Kindly upgrade to the <strong>HYBE GOLDEN</strong> tier.</p>
-                  <hr>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <p class="mb-1"><strong>Current Level:</strong><strong>${result.Current_ID_Level || "N/A"}</strong></p>
-                      <p class="mb-1"><strong>License Status:</strong><strong>${result.HYBE_Chat_License_info || "N/A"}</strong></p>
-                    </div>
-                    <div class="col-md-6">
-                      <p class="mb-1"><strong>Upgrade Token:</strong><strong>${result.HYBE_GOLDEN_Upgrade_fee || "N/A"}</strong></p>
-                    </div>
-                  </div>
-                </div>
+  <h5 class="alert-heading">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i> Upgrade Required
+  </h5>
+  <p class="mb-2">
+    <strong>Access Denied ⚠️</strong> : Your current subscription does not include license and chat permit features.
+    To unlock these premium features, kindly upgrade to the 
+    <strong style="color: goldenrod;">HYBE GOLDEN</strong> tier.
+  </p>
+  <hr>
+  <div class="row">
+    <div class="col-md-6">
+      <p class="mb-1">
+        <strong>Current Level:</strong>
+        <strong>
+          ${result.Current_ID_Level || "N/A"}
+        </strong>
+      </p>
+      <p class="mb-1">
+        <strong>License Status:</strong>
+        <strong style="
+          color: ${result.HYBE_Chat_License_info === 'ACTIVE' ? 'green' : result.HYBE_Chat_License_info === 'ON HOLD' ? 'red' : 'inherit'};
+        ">
+          ${result.HYBE_Chat_License_info || "N/A"}
+        </strong>
+      </p>
+    </div>
+    <div class="col-md-6">
+      <p class="mb-1">
+        <strong>Upgrade Token:</strong>
+        <strong>
+          ${result.HYBE_GOLDEN_Upgrade_fee 
+            ? result.HYBE_GOLDEN_Upgrade_fee + " (Due)" 
+            : "N/A"}
+        </strong>
+      </p>
+    </div>
+  </div>
+</div>
                 <div class="text-center my-4">
                   <h6 class="mb-3"><i class="bi bi-clock-fill me-2"></i> Time left to upgrade</h6>
                   <div class="timer-container" id="countdown-timer">
