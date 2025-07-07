@@ -731,19 +731,18 @@
                 
                 <div class="alert alert-warning" role="alert">
                   <h5 class="alert-heading"><i class="bi bi-exclamation-triangle-fill me-2"></i> Upgrade Required</h5>
-                  <p class="mb-2">Your current subscription level needs to be upgraded to access premium features.</p>
+                  <p class="mb-2">Unable to unclock license Your current subscription level needs to be upgraded to HYBE GOLDEN in order to access license and chat Permit features premium features.</p>
                   <hr>
                   <div class="row">
                     <div class="col-md-6">
-                      <p class="mb-1"><strong>Current Level:</strong>${result.Current_ID_Level || "N/A"}</p>
-                      <p class="mb-1"><strong>License Status:</strong>${result.HYBE_Chat_License_info || "N/A"}</p>
+                      <p class="mb-1"><strong>Current Level:</strong><strong>${result.Current_ID_Level || "N/A"}</strong></p>
+                      <p class="mb-1"><strong>License Status:</strong><strong>${result.HYBE_Chat_License_info || "N/A"}</strong></p>
                     </div>
                     <div class="col-md-6">
                       <p class="mb-1"><strong>Upgrade Token:</strong><strong>${result.HYBE_GOLDEN_Upgrade_fee || "N/A"}</strong></p>
                     </div>
                   </div>
                 </div>
-                
                 <div class="text-center my-4">
                   <h6 class="mb-3"><i class="bi bi-clock-fill me-2"></i> Time left to upgrade</h6>
                   <div class="timer-container" id="countdown-timer">
@@ -895,7 +894,7 @@
           <div class="progress mt-3" style="height: 8px;">
             <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
           </div>
-          <p id="progressText" class="small text-muted mt-2">Verifying credentials...</p>
+          <p id="progressText" class="small text-muted mt-2">Verifying your credentials...</p>
         `,
         allowOutsideClick: false,
         showConfirmButton: false,
