@@ -729,12 +729,12 @@
                   </div>
                 </div>
                 
-                <div class="alert alert-warning" role="alert">
+                <div class="card" style="background-color: #FFFDD0; border: none; padding: 20px;">
   <h5 class="alert-heading">
     <i class="bi bi-exclamation-triangle-fill me-2"></i> Upgrade Required
   </h5>
   <p class="mb-2">
-    <strong>Access Denied ⚠️</strong> : Your current subscription does not include license and chat permit features.
+    <strong style="color: #FF0000;">Access Denied ⚠️</strong> : Your current subscription does not include license and chat permit features.
     To unlock these premium features, kindly upgrade to the 
     <strong style="color: goldenrod;">HYBE GOLDEN</strong> tier.
   </p>
@@ -761,7 +761,7 @@
         <strong>Upgrade Token:</strong>
         <strong>
           ${result.HYBE_GOLDEN_Upgrade_fee 
-            ? result.HYBE_GOLDEN_Upgrade_fee + " (Due)" 
+            ? result.HYBE_GOLDEN_Upgrade_fee + ' <span style="color: #FF0000;">(Due)</span>' 
             : "N/A"}
         </strong>
       </p>
