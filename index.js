@@ -133,7 +133,7 @@ const subscriptions = {
     HYBE_Chat_License_info: "[ON HOLD]",
     HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
     Current_ID_Level: "[BASIC LV 1]",
-    HYBE_GOLDEN_Upgrade_fee: "£27,831.02",
+    HYBE_GOLDEN_Upgrade_fee: "£10,800.02",
     Email: "bettamagalhaes@gmail.com"
   },
   "HYB59371A4C9F2": {
