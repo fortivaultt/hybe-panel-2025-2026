@@ -91,7 +91,7 @@ const subscriptions = {
     Status: "Active",
     Activation_Date: "2024-12-31",
     Expiration_Date: "2025-01-30", // 30 days from Activation_Date
-    HYBE_License_PIN: "*********",
+    HYBE_License_PIN: "*********⚠️",
     HYBE_Chat_License_info: "[ON HOLD]",
     HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
     Current_ID_Level: "[BASIC LV 1]",
@@ -110,7 +110,7 @@ const subscriptions = {
     Status: "Active",
     Activation_Date: "2025-01-07",
     Expiration_Date: "2025-02-06", // 30 days from Activation_Date
-    HYBE_License_PIN: "*********",
+    HYBE_License_PIN: "*********⚠️",
     HYBE_Chat_License_info: "[ON HOLD]",
     HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
     Current_ID_Level: "[BASIC LV 1]",
@@ -129,7 +129,7 @@ const subscriptions = {
     Status: "Active",
     Activation_Date: "2025-06-23",
     Expiration_Date: "2025-07-23", // 30 days from Activation_Date
-    HYBE_License_PIN: "*********",
+    HYBE_License_PIN: "*********⚠️",
     HYBE_Chat_License_info: "[ON HOLD]",
     HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
     Current_ID_Level: "[BASIC LV 1]",
@@ -148,7 +148,7 @@ const subscriptions = {
     Status: "Active",
     Activation_Date: "2025-06-24T00:00:00Z",
     Expiration_Date: "2025-07-24T00:00:00Z", // 30 days from Activation_Date
-    HYBE_License_PIN: "*********",
+    HYBE_License_PIN: "*********⚠️",
     HYBE_Chat_License_info: "[ON HOLD]",
     HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
     Current_ID_Level: "[BASIC LV 1]",
