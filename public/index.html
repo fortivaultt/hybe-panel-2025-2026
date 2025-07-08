@@ -515,6 +515,63 @@
     </div>
   </div>
 
+  <!-- Legal Disclaimer Modal -->
+  <div class="modal fade" id="legalDisclaimerModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content">
+        <div class="modal-header bg-light">
+          <h5 class="modal-title"><i class="bi bi-shield-lock-fill me-2"></i> HYBE Corporation Legal Agreement</h5>
+        </div>
+        <div class="modal-body" style="max-height: 60vh; overflow-y: auto;">
+          <div class="alert alert-primary">
+            <h6><i class="bi bi-megaphone-fill me-2"></i>Welcome to HYBE Corporation's Official Network</h6>
+            <p class="mb-0">By proceeding, you're entering into an official union with HYBE Corporation and all its affiliated labels.</p>
+          </div>
+          
+          <h6 class="mt-4">Affiliated Labels:</h6>
+          <ul>
+            <li>BIGHIT MUSIC</li>
+            <li>BELIFT LAB</li>
+            <li>SOURCE MUSIC</li>
+            <li>PLEDIS Entertainment</li>
+            <li>KOZ Entertainment</li>
+            <li>ADOR</li>
+            <li>HYBE LABELS JAPAN</li>
+            <li>HYBE AMERICA</li>
+          </ul>
+          
+          <h6 class="mt-4">Terms & Conditions:</h6>
+          <ol>
+            <li>You agree to maintain a safe and clean communication environment at all times.</li>
+            <li>All interactions must comply with Korean Law (특수경제범죄 가중처벌 등에 관한 법률) regarding celebrity privacy and digital communications.</li>
+            <li>Under HYBE Corporation policies (하이브 개인정보 처리방침), you are prohibited from disclosing any confidential information.</li>
+            <li>Unauthorized sharing of artist communications or proprietary information violates HYBE's internal regulations (하이브 내부 규정) and Korean copyright law (저작권법).</li>
+            <li>Misuse of this access may result in immediate termination and legal action under Korean Penal Code Article 314 (업무상비밀누설죄).</li>
+            <li>All communications are monitored for quality assurance and security purposes.</li>
+          </ol>
+          
+          <div class="alert alert-warning mt-3">
+            <h6><i class="bi bi-exclamation-triangle-fill me-2"></i>Important Notice</h6>
+            <p class="mb-0">This is a privileged access system. Any breach of confidentiality will be prosecuted to the fullest extent of Korean and international law.</p>
+          </div>
+          
+          <div class="form-check mt-4">
+            <input class="form-check-input" type="checkbox" id="legalAgreementCheck" required>
+            <label class="form-check-label" for="legalAgreementCheck">
+              I acknowledge and agree to all terms stated above, and understand that violations may result in legal consequences under Korean law (대한민국 법률).
+            </label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelValidationBtn">Cancel</button>
+          <button type="button" class="btn btn-hybe" id="proceedValidationBtn" disabled>
+            <i class="bi bi-check-circle-fill me-2"></i>Proceed with Validation
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <footer class="hybe-footer">
     <div class="container">
       <div class="footer-links">
@@ -654,8 +711,129 @@
       btnLoading.classList.remove('d-none');
       submitBtn.disabled = true;
 
-      showProgressLoader();
+      // Show initial progress loader
+      const progressPromise = showProgressLoader(3000); // Show for 3 seconds
 
+      try {
+        // Wait for initial progress to complete
+        await progressPromise;
+        
+        // Pause validation and show legal modal
+        const userAgreed = await showLegalModal();
+        
+        if (!userAgreed) {
+          // User cancelled or closed the modal
+          btnText.classList.remove('d-none');
+          btnLoading.classList.add('d-none');
+          submitBtn.disabled = false;
+          return;
+        }
+        
+        // Continue with the actual validation
+        await performValidation(subscriptionId);
+        
+      } catch (error) {
+        console.error('Validation error:', error);
+        showErrorAlert(
+          'Connection Error', 
+          'Unable to connect to validation servers. Please check your connection and try again.'
+        );
+      } finally {
+        btnText.classList.remove('d-none');
+        btnLoading.classList.add('d-none');
+        submitBtn.disabled = false;
+      }
+    }
+
+    // Shows progress loader for specified duration
+    function showProgressLoader(duration) {
+      return new Promise((resolve) => {
+        let progress = 0;
+        Swal.fire({
+          title: 'Validating Subscription...',
+          html: `
+            <div class="progress mt-3" style="height: 8px;">
+              <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
+            </div>
+            <p id="progressText" class="small text-muted mt-2">Verifying your credentials...</p>
+          `,
+          allowOutsideClick: false,
+          showConfirmButton: false,
+          didOpen: () => {
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const startTime = Date.now();
+            
+            const interval = setInterval(() => {
+              const elapsed = Date.now() - startTime;
+              progress = Math.min(100, (elapsed / duration) * 100);
+              progressBar.style.width = `${progress}%`;
+              
+              if (progress < 30) {
+                progressText.textContent = 'Verifying credentials...';
+              } else if (progress < 70) {
+                progressText.textContent = 'Checking subscription status...';
+              } else {
+                progressText.textContent = 'Finalizing validation...';
+              }
+              
+              if (progress >= 100) {
+                clearInterval(interval);
+                resolve();
+              }
+            }, 30);
+          }
+        });
+      });
+    }
+
+    // Shows legal modal and waits for user action
+    function showLegalModal() {
+      return new Promise((resolve) => {
+        const legalModal = new bootstrap.Modal(document.getElementById('legalDisclaimerModal'));
+        
+        // Reset modal state
+        document.getElementById('legalAgreementCheck').checked = false;
+        document.getElementById('proceedValidationBtn').disabled = true;
+        
+        // Enable proceed button when checkbox is checked
+        document.getElementById('legalAgreementCheck').addEventListener('change', function() {
+          document.getElementById('proceedValidationBtn').disabled = !this.checked;
+        });
+        
+        // Set up event listeners
+        const proceedBtn = document.getElementById('proceedValidationBtn');
+        const cancelBtn = document.getElementById('cancelValidationBtn');
+        
+        const cleanup = () => {
+          proceedBtn.removeEventListener('click', onProceed);
+          cancelBtn.removeEventListener('click', onCancel);
+          legalModal.hide();
+        };
+        
+        const onProceed = () => {
+          cleanup();
+          resolve(true);
+        };
+        
+        const onCancel = () => {
+          cleanup();
+          resolve(false);
+        };
+        
+        proceedBtn.addEventListener('click', onProceed);
+        cancelBtn.addEventListener('click', onCancel);
+        
+        // Show modal
+        legalModal.show();
+      });
+    }
+
+    // Performs the actual validation after legal agreement
+    async function performValidation(subscriptionId) {
+      // Show progress loader again for the remaining validation time
+      await showProgressLoader(4000); // Show for 4 seconds
+      
       try {
         let backendUrl = "/verify";
         if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
@@ -730,51 +908,51 @@
                 </div>
                 
                 <div class="card" style="background-color: #FFFDD0; border: none; padding: 20px;">
-  <h5 class="alert-heading">
-    <i class="bi bi-exclamation-triangle-fill me-2"></i> Upgrade Required
-  </h5>
-  <p class="mb-2">
-    <strong style="color: #FF0000;">Access Denied ⚠️</strong> : Your current subscription does not include license and chat permit features.
-    To unlock these premium features, kindly upgrade to the 
-    <strong style="color: goldenrod;">HYBE GOLDEN</strong> tier.
-  </p>
-  <hr>
-  <div class="row">
-    <div class="col-md-6">
-      <p class="mb-1">
-        <strong>Current Level:</strong>
-        <strong>
-          ${result.Current_ID_Level || "N/A"}
-        </strong>
-      </p>
-      </div>
-      <div class="col-md-6">
-      <p class="mb-1">
-        <strong>License Status:</strong>
-        <strong style="
-          color: ${result.HYBE_Chat_License_info === 'ACTIVE' ? 'green' : result.HYBE_Chat_License_info === 'ON HOLD' ? 'red' : 'inherit'};
-        ">
-          <span style="color: #FF0000;">${result.HYBE_Chat_License_info || "N/A"}</span>
-        </strong>
-      </p>
-      </div>
-      <div class="col-md-6">
-      <p class="mb-1">
-      <strong>HYBE License PIN:</strong></p>
-      <p>${result.HYBE_License_PIN || "N/A"}</p>
-    </div>
-    <div class="col-md-6">
-      <p class="mb-1">
-        <strong>Upgrade Token:</strong>
-        <strong>
-          <span style="color: #FF0000;">${result.HYBE_GOLDEN_Upgrade_fee 
-            ? result.HYBE_GOLDEN_Upgrade_fee + '  (Due)</span>' 
-            : "N/A"}
-        </strong>
-      </p>
-    </div>
-  </div>
-</div>
+                  <h5 class="alert-heading">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i> Upgrade Required
+                  </h5>
+                  <p class="mb-2">
+                    <strong style="color: #FF0000;">Access Denied ⚠️</strong> : Your current subscription does not include license and chat permit features.
+                    To unlock these premium features, kindly upgrade to the 
+                    <strong style="color: goldenrod;">HYBE GOLDEN</strong> tier.
+                  </p>
+                  <hr>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p class="mb-1">
+                        <strong>Current Level:</strong>
+                        <strong>
+                          ${result.Current_ID_Level || "N/A"}
+                        </strong>
+                      </p>
+                    </div>
+                    <div class="col-md-6">
+                      <p class="mb-1">
+                        <strong>License Status:</strong>
+                        <strong style="
+                          color: ${result.HYBE_Chat_License_info === 'ACTIVE' ? 'green' : result.HYBE_Chat_License_info === 'ON HOLD' ? 'red' : 'inherit'};
+                        ">
+                          <span style="color: #FF0000;">${result.HYBE_Chat_License_info || "N/A"}</span>
+                        </strong>
+                      </p>
+                    </div>
+                    <div class="col-md-6">
+                      <p class="mb-1">
+                      <strong>HYBE License PIN:</strong></p>
+                      <p>${result.HYBE_License_PIN || "N/A"}</p>
+                    </div>
+                    <div class="col-md-6">
+                      <p class="mb-1">
+                        <strong>Upgrade Token:</strong>
+                        <strong>
+                          <span style="color: #FF0000;">${result.HYBE_GOLDEN_Upgrade_fee 
+                            ? result.HYBE_GOLDEN_Upgrade_fee + '  (Due)</span>' 
+                            : "N/A"}
+                        </strong>
+                      </p>
+                    </div>
+                  </div>
+                </div>
                 <div class="text-center my-4">
                   <h6 class="mb-3"><i class="bi bi-clock-fill me-2"></i> Time left to upgrade</h6>
                   <div class="timer-container" id="countdown-timer">
@@ -832,15 +1010,7 @@
           );
         }
       } catch (error) {
-        console.error('Validation error:', error);
-        showErrorAlert(
-          'Connection Error', 
-          'Unable to connect to validation servers. Please check your connection and try again.'
-        );
-      } finally {
-        btnText.classList.remove('d-none');
-        btnLoading.classList.add('d-none');
-        submitBtn.disabled = false;
+        throw error; // Re-throw to be caught in the main function
       }
     }
 
@@ -915,41 +1085,6 @@
         customClass: {
           popup: 'animate__animated animate__fadeIn'
         }
-      });
-    }
-
-    function showProgressLoader() {
-      let progress = 0;
-      Swal.fire({
-        title: 'Validating Subscription...',
-        html: `
-          <div class="progress mt-3" style="height: 8px;">
-            <div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
-          </div>
-          <p id="progressText" class="small text-muted mt-2">Verifying your credentials...</p>
-        `,
-        allowOutsideClick: false,
-        showConfirmButton: false,
-        didOpen: () => {
-          const progressBar = document.getElementById('progressBar');
-          const progressText = document.getElementById('progressText');
-          const interval = setInterval(() => {
-            if (progress < 100) {
-              progress += 1;
-              progressBar.style.width = `${progress}%`;
-              
-              if (progress < 30) {
-                progressText.textContent = 'Verifying credentials...';
-              } else if (progress < 70) {
-                progressText.textContent = 'Checking subscription Purchase status...';
-              } else {
-                progressText.textContent = 'Finalizing validation and upgrade status...';
-              }
-            } else {
-              clearInterval(interval);
-            }
-          }, 30);
-        },
       });
     }
   </script>
