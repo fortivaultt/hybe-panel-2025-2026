@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en"> 
 <head>
   <meta charset="UTF-8">
@@ -410,19 +411,32 @@
       animation: float 3s ease-in-out infinite;
     }
 
-    /* Modal z-index fix */
+    /* Modal z-index fixes */
     .modal {
-      z-index: 99999 !important;
+      z-index: 1050 !important;
     }
-    
-    /* Modal backdrop fix */
+
     .modal-backdrop {
-      z-index: 99998 !important;
+      z-index: 1040 !important;
     }
-    
+
+    #legalDisclaimerModal {
+      z-index: 999999 !important;
+    }
+
+    #legalDisclaimerModal + .modal-backdrop {
+      z-index: 999998 !important;
+    }
+
     /* SweetAlert2 z-index fix */
     .swal2-container {
-      z-index: 999999 !important;
+      z-index: 9999999 !important;
+    }
+
+    /* Make sure other modals stay behind */
+    .validation-card {
+      position: relative;
+      z-index: 1;
     }
   </style>
 </head>
@@ -725,14 +739,8 @@
       btnLoading.classList.remove('d-none');
       submitBtn.disabled = true;
 
-      // Show initial progress loader
-      const progressPromise = showProgressLoader(3000); // Show for 3 seconds
-
       try {
-        // Wait for initial progress to complete
-        await progressPromise;
-        
-        // Pause validation and show legal modal
+        // First show the legal disclaimer modal and wait for user agreement
         const userAgreed = await showLegalModal();
         
         if (!userAgreed) {
@@ -743,7 +751,10 @@
           return;
         }
         
-        // Continue with the actual validation
+        // After legal agreement, show the progress loader
+        await showProgressLoader(3000);
+        
+        // Then proceed with the actual validation
         await performValidation(subscriptionId);
         
       } catch (error) {
@@ -806,7 +817,8 @@
       return new Promise((resolve) => {
         const legalModal = new bootstrap.Modal(document.getElementById('legalDisclaimerModal'), {
           backdrop: 'static',
-          keyboard: false
+          keyboard: false,
+          focus: true
         });
         
         // Reset modal state
@@ -841,8 +853,10 @@
         proceedBtn.addEventListener('click', onProceed);
         cancelBtn.addEventListener('click', onCancel);
         
-        // Show modal
+        // Show modal with proper z-index
         legalModal.show();
+        document.getElementById('legalDisclaimerModal').style.zIndex = '999999';
+        document.querySelector('.modal-backdrop').style.zIndex = '999998';
       });
     }
 
