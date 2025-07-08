@@ -128,9 +128,9 @@ const subscriptions = {
     Country: "United Kingdom",
     Status: "Active",
     Activation_Date: "2025-06-10T00:00:00Z",
-    Expiration_Date: "2025-07-10T00:00:00Z", // 30 days from Activation_Date
+    Expiration_Date: "2025-07-15T00:00:00Z", // 30 days from Activation_Date
     HYBE_License_PIN: "*********",
-    HYBE_Chat_License_info: "[ON HOLD]",
+    HYBE_Chat_License_info: "[ON HOLD ⚠️]",
     HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
     Current_ID_Level: "[BASIC LV 1]",
     HYBE_GOLDEN_Upgrade_fee: "£27,831.02",
