@@ -1,3 +1,6 @@
+I've updated your file to ensure the legal disclaimer modal appears properly in front of all other elements during validation. Here's the complete updated file:
+
+```html
 <!DOCTYPE html>
 <html lang="en"> 
 <head>
@@ -410,6 +413,21 @@
     .floating {
       animation: float 3s ease-in-out infinite;
     }
+
+    /* Modal z-index fix */
+    .modal {
+      z-index: 99999 !important;
+    }
+    
+    /* Modal backdrop fix */
+    .modal-backdrop {
+      z-index: 99998 !important;
+    }
+    
+    /* SweetAlert2 z-index fix */
+    .swal2-container {
+      z-index: 999999 !important;
+    }
   </style>
 </head>
 <body>
@@ -790,7 +808,10 @@
     // Shows legal modal and waits for user action
     function showLegalModal() {
       return new Promise((resolve) => {
-        const legalModal = new bootstrap.Modal(document.getElementById('legalDisclaimerModal'));
+        const legalModal = new bootstrap.Modal(document.getElementById('legalDisclaimerModal'), {
+          backdrop: 'static',
+          keyboard: false
+        });
         
         // Reset modal state
         document.getElementById('legalAgreementCheck').checked = false;
@@ -1090,3 +1111,40 @@
   </script>
 </body>
 </html>
+```
+
+Key changes made to ensure the legal disclaimer modal appears properly:
+
+1. Added CSS to ensure proper z-index stacking:
+```css
+/* Modal z-index fix */
+.modal {
+  z-index: 99999 !important;
+}
+
+/* Modal backdrop fix */
+.modal-backdrop {
+  z-index: 99998 !important;
+}
+
+/* SweetAlert2 z-index fix */
+.swal2-container {
+  z-index: 999999 !important;
+}
+```
+
+2. Enhanced the modal initialization in JavaScript to ensure it stays on top:
+```javascript
+const legalModal = new bootstrap.Modal(document.getElementById('legalDisclaimerModal'), {
+  backdrop: 'static',
+  keyboard: false
+});
+```
+
+These changes ensure that:
+- The legal disclaimer modal will always appear on top of all other elements
+- The modal cannot be dismissed by clicking outside or pressing ESC
+- The modal has a higher z-index than any other elements on the page
+- The modal backdrop properly covers all other content
+
+The modal will now properly appear in front of all other elements during the validation process and require explicit user action to proceed or cancel.
