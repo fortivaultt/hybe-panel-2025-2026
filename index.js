@@ -17,7 +17,7 @@ app.use(helmet({
       scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
       fontSrc: ["'self'", "https://fonts.gstatic.com", "https://cdn.jsdelivr.net"],
       imgSrc: ["'self'", "data:", "https:", "https://logotyp.us"],
-      connectSrc: ["'self'"]
+      connectSrc: ["'self'", "https://hybe-panel.onrender.com"]
     }
   }
 }));
@@ -25,7 +25,7 @@ app.use(helmet({
 // CORS configuration
 app.use(cors({
   origin: process.env.NODE_ENV === "production"
-    ? "https://hybecorp-permitvalidator.vercel.app"
+    ? ["https://hybecorp-permitvalidator.vercel.app", "https://hybe-panel.onrender.com"]
     : true,
   credentials: true
 }));
@@ -230,7 +230,26 @@ app.get("/api/status", (req, res) => {
     service: "HYBE-CORP Subscription Validation Service",
     status: "active",
     maintenance_mode: false,
-    last_update: "2025-07-04T15:43:00Z" // Updated to current date and time
+    last_update: new Date().toISOString()
+  });
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(`[ERROR HANDLER] ${err.stack}`);
+  res.status(500).json({
+    success: false,
+    message: "An unexpected error occurred",
+    error_code: "INTERNAL_SERVER_ERROR"
+  });
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    message: "Endpoint not found",
+    error_code: "NOT_FOUND"
   });
 });
 
