@@ -81,7 +81,7 @@ const validateSubscriptionId = (req, res, next) => {
 const subscriptions = {
   "HYB07280EF6207": {
     subscription_id: "HYB07280EF6207",
-    created_at: "2024-12-31T00:00:00Z",
+    created_at: "2024-12-31",
     last_accessed: null,
     access_count: 0,
     ip_whitelist: [],
@@ -89,8 +89,8 @@ const subscriptions = {
     Date_of_Birth: "1985-11-03",
     Country: "India",
     Status: "Active",
-    Activation_Date: "2024-12-31T00:00:00Z",
-    Expiration_Date: "2025-01-30T00:00:00Z", // 30 days from Activation_Date
+    Activation_Date: "2024-12-31",
+    Expiration_Date: "2025-01-30", // 30 days from Activation_Date
     HYBE_License_PIN: "*********",
     HYBE_Chat_License_info: "[ON HOLD]",
     HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
@@ -100,7 +100,7 @@ const subscriptions = {
   },
   "HYBRUS07280EF6207": {
     subscription_id: "HYBRUS07280EF6207",
-    created_at: "2025-01-07T00:00:00Z",
+    created_at: "2025-01-07",
     last_accessed: null,
     access_count: 0,
     ip_whitelist: [],
@@ -108,8 +108,8 @@ const subscriptions = {
     Date_of_Birth: "1980-08-09",
     Country: "Russia",
     Status: "Active",
-    Activation_Date: "2025-01-07T00:00:00Z",
-    Expiration_Date: "2025-02-06T00:00:00Z", // 30 days from Activation_Date
+    Activation_Date: "2025-01-07",
+    Expiration_Date: "2025-02-06", // 30 days from Activation_Date
     HYBE_License_PIN: "*********",
     HYBE_Chat_License_info: "[ON HOLD]",
     HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
@@ -119,7 +119,7 @@ const subscriptions = {
   },
   "HYB10250GB0680": {
     subscription_id: "HYB10250GB0680",
-    created_at: "2025-06-23T00:00:00Z",
+    created_at: "2025-06-23",
     last_accessed: null,
     access_count: 0,
     ip_whitelist: [],
@@ -127,8 +127,8 @@ const subscriptions = {
     Date_of_Birth: "1980-06-30",
     Country: "United Kingdom",
     Status: "Active",
-    Activation_Date: "2025-06-23T00:00:00Z",
-    Expiration_Date: "2025-07-23T00:00:00Z", // 30 days from Activation_Date
+    Activation_Date: "2025-06-23",
+    Expiration_Date: "2025-07-23", // 30 days from Activation_Date
     HYBE_License_PIN: "*********",
     HYBE_Chat_License_info: "[ON HOLD]",
     HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
