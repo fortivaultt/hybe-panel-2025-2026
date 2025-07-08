@@ -119,7 +119,7 @@ const subscriptions = {
   },
   "HYB10250GB0680": {
     subscription_id: "HYB10250GB0680",
-    created_at: "2025-06-10T00:00:00Z",
+    created_at: "2025-06-23T00:00:00Z",
     last_accessed: null,
     access_count: 0,
     ip_whitelist: [],
@@ -127,10 +127,10 @@ const subscriptions = {
     Date_of_Birth: "1980-06-30",
     Country: "United Kingdom",
     Status: "Active",
-    Activation_Date: "2025-06-10T00:00:00Z",
-    Expiration_Date: "2025-07-15T00:00:00Z", // 30 days from Activation_Date
+    Activation_Date: "2025-06-23T00:00:00Z",
+    Expiration_Date: "2025-07-23T00:00:00Z", // 30 days from Activation_Date
     HYBE_License_PIN: "*********",
-    HYBE_Chat_License_info: "[ON HOLD ⚠️]",
+    HYBE_Chat_License_info: "[ON HOLD]",
     HYBE_License_Status: "[ACTION REQUIRED] Kindly upgrade your subscription ID to HYBE-GOLDEN to access your HYBE License PIN",
     Current_ID_Level: "[BASIC LV 1]",
     HYBE_GOLDEN_Upgrade_fee: "£27,831.02",
