@@ -578,11 +578,17 @@
       const submitBtn = document.getElementById('validateBtn');
       const btnText = submitBtn.querySelector('.btn-text');
       const btnLoading = submitBtn.querySelector('.btn-loading');
-      
+      const termsCheckbox = document.getElementById('termsCheck');
+
       if (!subscriptionId) { showErrorAlert('Required Field', 'Kindly enter your subscription ID to continue.'); return; }
       const validPattern = /^[A-Z0-9]{10,20}$/;
       if (!validPattern.test(subscriptionId)) { showErrorAlert('Invalid Format', 'Subscription ID must contain 10-20 alphanumeric characters.'); return; }
-      if (!document.getElementById('termsCheck').checked) { showErrorAlert('Terms Required', 'Agree to the Terms of Service and Privacy Policy to continue.'); return; }
+
+      // If user previously agreed via localStorage, auto-check the terms checkbox
+      const previouslyAgreed = (function(){ try { return localStorage.getItem('hybe_legal_agreed') === '1'; } catch(e){ return false; } })();
+      if (previouslyAgreed && termsCheckbox) { termsCheckbox.checked = true; }
+
+      if (!termsCheckbox || !termsCheckbox.checked) { showErrorAlert('Terms Required', 'Agree to the Terms of Service and Privacy Policy to continue.'); return; }
 
       // If client-side rate-limit active, show countdown
       if (rateLimitResetAt && Date.now() < rateLimitResetAt) {
@@ -595,9 +601,20 @@
       btnText.classList.add('d-none'); btnLoading.classList.remove('d-none'); submitBtn.disabled = true;
 
       try {
-        const userAgreed = await showLegalModal();
+        let userAgreed = true;
+        // If they haven't agreed before, show the legal modal and record their consent
+        if (!previouslyAgreed) {
+          userAgreed = await showLegalModal();
+        }
+
         if (!userAgreed) { btnText.classList.remove('d-none'); btnLoading.classList.add('d-none'); submitBtn.disabled = false; return; }
-        await showProgressLoader(2000);
+
+        // Personalized greeting for returning users
+        let greetingName = '';
+        try { greetingName = localStorage.getItem('hybe_user_name') || ''; } catch(e) { greetingName = ''; }
+        const greetingMsg = greetingName ? `Hello ${greetingName}, welcome back to HYBE CORP Fan Subscription ID validator! Hold on for a few seconds while we validate your subscription ID and fetch your profile status.` : `Welcome back to HYBE CORP Fan Subscription ID validator! Hold on for a few seconds while we validate your subscription ID and fetch your profile status.`;
+
+        await showProgressLoader(2200, greetingMsg);
         await performValidation(subscriptionId);
       } catch (error) {
         console.error('Validation error:', error);
