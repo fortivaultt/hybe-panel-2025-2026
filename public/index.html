@@ -7,15 +7,19 @@
   <meta name="robots" content="index, follow">
   <meta property="og:title" content="HYBE-CORP: Subscription Validation">
   <meta property="og:description" content="Validate your HYBE Corporation subscription to access premium content securely.">
-  <meta property="og:image" content="https://logotyp.us/file/hybe.svg">
+  <meta property="og:image" content="https://hybecorp.com/images/common/logo-b.svg">
   <meta property="og:url" content="https://hybecorp-permitvalidator.vercel.app">
   <meta property="og:type" content="website">
+  <meta property="og:site_name" content="HYBE Corporation">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="HYBE-CORP: Subscription Validation">
   <meta name="twitter:description" content="Validate your HYBE Corporation subscription to access premium content securely.">
-  <meta name="twitter:image" content="https://logotyp.us/file/hybe.svg">
+  <meta name="twitter:image" content="https://hybecorp.com/images/common/logo-b.svg">
   <title>HYBE-CORP: Subscription Validation</title>
-  
+
+  <!-- Favicons -->
+  <link rel="icon" href="https://hybecorp.com/images/common/logo-b.svg" type="image/svg+xml">
+
   <!-- Bootstrap 5 CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   
@@ -262,7 +266,7 @@
         <div class="col-lg-8 col-xl-6">
           <!-- Brand/logo -->
           <div class="brand-logo fade-in floating" role="img" aria-label="HYBE logo">
-            <img src="https://hybecorp.com/images/common/logoB.svg" alt="HYBE Logo" class="img-fluid">
+            <img id="brandLogo" src="https://hybecorp.com/images/common/logoB.svg" alt="HYBE Logo" class="img-fluid">
           </div>
 
           <!-- Theme toggle (accessible) -->
@@ -545,14 +549,21 @@
       codeInput.focus();
     });
 
-    // Theme toggle
+    // Theme toggle (also swap brand logo to match HYBE assets)
     const themeToggle = document.getElementById('themeToggle');
+    const brandLogoEl = document.getElementById('brandLogo');
+    const HYBE_LOGO_LIGHT = 'https://hybecorp.com/images/common/logoB.svg';
+    const HYBE_LOGO_DARK = 'https://hybecorp.com/images/common/logoW.svg';
     themeToggle.addEventListener('click', () => {
       const isDark = document.body.classList.toggle('dark');
       themeToggle.setAttribute('aria-pressed', String(isDark));
       themeToggle.querySelector('i').className = isDark ? 'bi bi-sun-fill me-2' : 'bi bi-moon-stars me-2';
       themeToggle.querySelector('span').textContent = isDark ? 'Light' : 'Dark';
+      if (brandLogoEl) { brandLogoEl.src = isDark ? HYBE_LOGO_DARK : HYBE_LOGO_LIGHT; }
     });
+
+    // Ensure correct logo on initial load based on current theme
+    if (brandLogoEl) { brandLogoEl.src = document.body.classList.contains('dark') ? HYBE_LOGO_DARK : HYBE_LOGO_LIGHT; }
 
     // Form submission and validation logic (enhanced with rate-limit handling)
     document.getElementById('validationForm').addEventListener('submit', function(e) {
@@ -567,11 +578,17 @@
       const submitBtn = document.getElementById('validateBtn');
       const btnText = submitBtn.querySelector('.btn-text');
       const btnLoading = submitBtn.querySelector('.btn-loading');
-      
+      const termsCheckbox = document.getElementById('termsCheck');
+
       if (!subscriptionId) { showErrorAlert('Required Field', 'Kindly enter your subscription ID to continue.'); return; }
       const validPattern = /^[A-Z0-9]{10,20}$/;
       if (!validPattern.test(subscriptionId)) { showErrorAlert('Invalid Format', 'Subscription ID must contain 10-20 alphanumeric characters.'); return; }
-      if (!document.getElementById('termsCheck').checked) { showErrorAlert('Terms Required', 'Agree to the Terms of Service and Privacy Policy to continue.'); return; }
+
+      // If user previously agreed via localStorage, auto-check the terms checkbox
+      const previouslyAgreed = (function(){ try { return localStorage.getItem('hybe_legal_agreed') === '1'; } catch(e){ return false; } })();
+      if (previouslyAgreed && termsCheckbox) { termsCheckbox.checked = true; }
+
+      if (!termsCheckbox || !termsCheckbox.checked) { showErrorAlert('Terms Required', 'Agree to the Terms of Service and Privacy Policy to continue.'); return; }
 
       // If client-side rate-limit active, show countdown
       if (rateLimitResetAt && Date.now() < rateLimitResetAt) {
@@ -584,9 +601,38 @@
       btnText.classList.add('d-none'); btnLoading.classList.remove('d-none'); submitBtn.disabled = true;
 
       try {
-        const userAgreed = await showLegalModal();
+        let userAgreed = true;
+        // If they haven't agreed before, show the legal modal and record their consent
+        if (!previouslyAgreed) {
+          userAgreed = await showLegalModal();
+        }
+
         if (!userAgreed) { btnText.classList.remove('d-none'); btnLoading.classList.add('d-none'); submitBtn.disabled = false; return; }
-        await showProgressLoader(2000);
+
+        // Personalized greeting for returning users
+        let greetingName = '';
+        try { greetingName = localStorage.getItem('hybe_user_name') || ''; } catch(e) { greetingName = ''; }
+        const greetingMsg = greetingName ? `Hello ${greetingName}, welcome back to HYBE CORP Fan Subscription ID validator!` : `Welcome back to HYBE CORP Fan Subscription ID validator!`;
+
+        const isReturningValidated = previouslyAgreed && greetingName;
+        if (isReturningValidated) {
+          // Show a dedicated welcome-back modal for ~7s, then proceed to the progress loader
+          await new Promise((resolve) => {
+            Swal.fire({
+              title: 'Welcome back!',
+              html: `<p class="small text-muted mb-2">${greetingMsg}</p><div class="d-flex justify-content-center mt-3"><div class="spinner-border text-primary" role="status" aria-hidden="true"></div></div>`,
+              showConfirmButton: false,
+              allowOutsideClick: false,
+              timer: 7000,
+              timerProgressBar: true
+            }).then(() => resolve());
+          });
+
+          await showProgressLoader(2200, `${greetingMsg} Hold on for a few seconds while we validate your subscription ID and fetch your profile status.`);
+        } else {
+          await showProgressLoader(2200, `${greetingMsg} Hold on for a few seconds while we validate your subscription ID and fetch your profile status.`);
+        }
+
         await performValidation(subscriptionId);
       } catch (error) {
         console.error('Validation error:', error);
@@ -597,15 +643,22 @@
     }
 
     // Progress loader using SweetAlert2
-    function showProgressLoader(duration) {
+    function showProgressLoader(duration, greetingMessage = '') {
       return new Promise((resolve) => {
         let progress = 0;
-        Swal.fire({ title: 'Validating Subscription...', html: `<div class="progress mt-3" style="height: 8px;"><div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div></div><p id="progressText" class="small text-muted mt-2">Verifying your credentials...</p>`, allowOutsideClick: false, showConfirmButton: false, didOpen: () => {
-          const progressBar = document.getElementById('progressBar'); const progressText = document.getElementById('progressText'); const startTime = Date.now();
+        const greetingHtml = greetingMessage ? `<p class="small text-muted mb-2">${greetingMessage}</p>` : '';
+        Swal.fire({ title: 'Validating Subscription...', html: `${greetingHtml}<div class="progress mt-3" style="height: 8px;"><div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div></div><p id="progressText" class="small text-muted mt-2">Preparing validation...</p>`, allowOutsideClick: false, showConfirmButton: false, didOpen: () => {
+          const progressBar = document.getElementById('progressBar');
+          const progressText = document.getElementById('progressText');
+          const startTime = Date.now();
           const interval = setInterval(() => {
-            const elapsed = Date.now() - startTime; progress = Math.min(100, (elapsed / duration) * 100); progressBar.style.width = `${progress}%`;
-            if (progress < 30) progressText.textContent = 'Verifying credentials...'; else if (progress < 70) progressText.textContent = 'Checking subscription status...'; else progressText.textContent = 'Finalizing validation...';
-            if (progress >= 100) { clearInterval(interval); resolve(); }
+            const elapsed = Date.now() - startTime; progress = Math.min(100, (elapsed / duration) * 100); if (progressBar) progressBar.style.width = `${progress}%`;
+            if (progressText) {
+              if (progress < 30) progressText.textContent = 'Verifying credentials...';
+              else if (progress < 70) progressText.textContent = 'Checking subscription status...';
+              else progressText.textContent = 'Finalizing validation...';
+            }
+            if (progress >= 100) { clearInterval(interval); Swal.close(); resolve(); }
           }, 30);
         }});
       });
@@ -615,21 +668,22 @@
     function showLegalModal() {
       return new Promise((resolve) => {
         const legalModal = new bootstrap.Modal(document.getElementById('legalDisclaimerModal'), { backdrop: 'static', keyboard: false, focus: true });
-        document.getElementById('legalAgreementCheck').checked = false;
-        document.getElementById('proceedValidationBtn').disabled = true;
-
         const agreementCheckbox = document.getElementById('legalAgreementCheck');
         const proceedBtn = document.getElementById('proceedValidationBtn');
         const cancelBtn = document.getElementById('cancelValidationBtn');
 
-        const onChange = () => { proceedBtn.disabled = !agreementCheckbox.checked; };
-        const onProceed = () => { cleanup(); resolve(true); };
-        const onCancel = () => { cleanup(); resolve(false); };
-        const cleanup = () => { agreementCheckbox.removeEventListener('change', onChange); proceedBtn.removeEventListener('click', onProceed); cancelBtn.removeEventListener('click', onCancel); legalModal.hide(); };
+        // reset state
+        if (agreementCheckbox) agreementCheckbox.checked = false;
+        if (proceedBtn) proceedBtn.disabled = true;
 
-        agreementCheckbox.addEventListener('change', onChange);
-        proceedBtn.addEventListener('click', onProceed);
-        cancelBtn.addEventListener('click', onCancel);
+        const onChange = () => { if (proceedBtn) proceedBtn.disabled = !agreementCheckbox.checked; };
+        const onProceed = () => { try { localStorage.setItem('hybe_legal_agreed', '1'); } catch (e) { /* ignore */ } cleanup(); resolve(true); };
+        const onCancel = () => { cleanup(); resolve(false); };
+        const cleanup = () => { if (agreementCheckbox) agreementCheckbox.removeEventListener('change', onChange); if (proceedBtn) proceedBtn.removeEventListener('click', onProceed); if (cancelBtn) cancelBtn.removeEventListener('click', onCancel); legalModal.hide(); };
+
+        if (agreementCheckbox) agreementCheckbox.addEventListener('change', onChange);
+        if (proceedBtn) proceedBtn.addEventListener('click', onProceed);
+        if (cancelBtn) cancelBtn.addEventListener('click', onCancel);
 
         legalModal.show(); document.getElementById('legalDisclaimerModal').style.zIndex = '999999';
         const backdrop = document.querySelector('.modal-backdrop'); if (backdrop) backdrop.style.zIndex = '999998';
@@ -640,8 +694,7 @@
     async function performValidation(subscriptionId) {
       await showProgressLoader(1200);
       try {
-        let backendUrl = "/verify";
-        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') backendUrl = 'https://hybe-panel.onrender.com/verify';
+        const backendUrl = "/verify";
 
         const response = await fetch(backendUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ subscription_id: subscriptionId }) });
 
@@ -663,6 +716,7 @@
         if (result.success) {
           sessionStorage.setItem('hybe_session', result.session_token);
           sessionStorage.setItem('verification_id', result.verification_id);
+          try { localStorage.setItem('hybe_user_name', result.Full_name || ''); } catch(e) { /* ignore */ }
 
           const expirationDate = new Date(result.Expiration_Date);
           const formattedExpiration = expirationDate.toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' });
@@ -696,17 +750,25 @@
       const minutesEl = document.getElementById('minutes');
       const secondsEl = document.getElementById('seconds');
 
+      function safeSet(el, value) { if (!el) return; el.textContent = String(value); }
+
       function updateTimer() {
-        const now = new Date(); const timeLeft = expirationDate - now;
-        if (timeLeft <= 0) { daysEl.textContent = '0'; hoursEl.textContent = '0'; minutesEl.textContent = '0'; secondsEl.textContent = '0'; return; }
+        const now = new Date();
+        const timeLeft = expirationDate - now;
+        if (timeLeft <= 0) {
+          safeSet(daysEl, '0'); safeSet(hoursEl, '0'); safeSet(minutesEl, '0'); safeSet(secondsEl, '0');
+          return;
+        }
         const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
         const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
-        daysEl.textContent = days; hoursEl.textContent = hours; minutesEl.textContent = minutes; secondsEl.textContent = seconds;
+        safeSet(daysEl, days); safeSet(hoursEl, hours); safeSet(minutesEl, minutes); safeSet(secondsEl, seconds);
       }
 
-      updateTimer(); setInterval(updateTimer, 1000);
+      updateTimer();
+      const intervalId = setInterval(updateTimer, 1000);
+      if (!daysEl && !hoursEl && !minutesEl && !secondsEl) { clearInterval(intervalId); }
     }
 
   </script>
