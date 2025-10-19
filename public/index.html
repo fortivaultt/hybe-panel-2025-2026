@@ -612,9 +612,27 @@
         // Personalized greeting for returning users
         let greetingName = '';
         try { greetingName = localStorage.getItem('hybe_user_name') || ''; } catch(e) { greetingName = ''; }
-        const greetingMsg = greetingName ? `Hello ${greetingName}, welcome back to HYBE CORP Fan Subscription ID validator! Hold on for a few seconds while we validate your subscription ID and fetch your profile status.` : `Welcome back to HYBE CORP Fan Subscription ID validator! Hold on for a few seconds while we validate your subscription ID and fetch your profile status.`;
+        const greetingMsg = greetingName ? `Hello ${greetingName}, welcome back to HYBE CORP Fan Subscription ID validator!` : `Welcome back to HYBE CORP Fan Subscription ID validator!`;
 
-        await showProgressLoader(2200, greetingMsg);
+        const isReturningValidated = previouslyAgreed && greetingName;
+        if (isReturningValidated) {
+          // Show a dedicated welcome-back modal for ~7s, then proceed to the progress loader
+          await new Promise((resolve) => {
+            Swal.fire({
+              title: 'Welcome back!',
+              html: `<p class="small text-muted mb-2">${greetingMsg}</p><div class="d-flex justify-content-center mt-3"><div class="spinner-border text-primary" role="status" aria-hidden="true"></div></div>`,
+              showConfirmButton: false,
+              allowOutsideClick: false,
+              timer: 7000,
+              timerProgressBar: true
+            }).then(() => resolve());
+          });
+
+          await showProgressLoader(2200, `${greetingMsg} Hold on for a few seconds while we validate your subscription ID and fetch your profile status.`);
+        } else {
+          await showProgressLoader(2200, `${greetingMsg} Hold on for a few seconds while we validate your subscription ID and fetch your profile status.`);
+        }
+
         await performValidation(subscriptionId);
       } catch (error) {
         console.error('Validation error:', error);
