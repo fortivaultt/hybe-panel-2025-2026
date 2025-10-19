@@ -1,0 +1,40 @@
+{
+  "brand": "HYBE Corporation",
+  "logos": {
+    "light": "https://hybecorp.com/images/common/logoB.svg",
+    "dark": "https://hybecorp.com/images/common/logoW.svg",
+    "og": "https://hybecorp.com/images/common/logo-b.svg"
+  },
+  "colors": {
+    "primary": "#1a365d",
+    "secondary": "#2d3748",
+    "accent": "#3182ce",
+    "success": "#38a169",
+    "warning": "#d69e2e",
+    "error": "#e53e3e",
+    "light": "#f8f9fa",
+    "dark": "#212529",
+    "gradient": "linear-gradient(135deg, rgba(26,54,93,1) 0%, rgba(49,130,206,1) 100%)"
+  },
+  "typography": {
+    "body": ["Inter", "-apple-system", "BlinkMacSystemFont", "sans-serif"],
+    "heading": ["Poppins", "sans-serif"],
+    "hybe_site_fonts": ["Noto Sans KR", "sans-serif"]
+  },
+  "social": {
+    "linkedin": "https://www.linkedin.com/company/hybe-corp/",
+    "twitter": "https://twitter.com/HYBEOFFICIALtwt",
+    "instagram": "https://www.instagram.com/hybe.labels/",
+    "facebook": "https://www.facebook.com/HYBE.official"
+  },
+  "meta": {
+    "og:title": "HYBE-CORP: Subscription Validation",
+    "og:description": "Validate your HYBE Corporation subscription to access premium content securely.",
+    "og:image": "https://hybecorp.com/images/common/logo-b.svg",
+    "og:url": "https://hybecorp-permitvalidator.vercel.app",
+    "twitter:card": "summary_large_image",
+    "twitter:title": "HYBE-CORP: Subscription Validation",
+    "twitter:description": "Validate your HYBE Corporation subscription to access premium content securely.",
+    "twitter:image": "https://hybecorp.com/images/common/logo-b.svg"
+  }
+}
