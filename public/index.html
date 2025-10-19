@@ -248,6 +248,19 @@
 
     /* Custom checkbox for terms */
     .form-check-input:checked { background-color: var(--hybe-accent); border-color: var(--hybe-accent); }
+
+    /* Premium modal styles */
+    .premium-modal .modal-content { border-radius: 14px; box-shadow: 0 20px 40px rgba(2,6,23,0.36); background: linear-gradient(180deg, rgba(255,255,255,0.96), rgba(248,249,250,0.88)); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.06); overflow: hidden; }
+    .premium-modal .modal-header { border-bottom: 0; }
+    .premium-modal .modal-title { font-family: 'Poppins', sans-serif; letter-spacing: -0.2px; }
+    .premium-modal .modal-body { padding-top: 1rem; padding-bottom: 1.25rem; }
+    .premium-modal .spinner-border { color: var(--hybe-accent); }
+
+    /* SweetAlert2 hybe theme */
+    .swal2-hybe .swal2-title { font-family: 'Poppins', sans-serif; color: var(--hybe-primary); }
+    .swal2-hybe .swal2-content { color: var(--hybe-secondary); }
+    .swal2-hybe .swal2-popup { border-radius: 12px; box-shadow: var(--hybe-elevation); }
+
   </style>
 </head>
 <body>
@@ -360,6 +373,29 @@
                 </div>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Welcome Back Modal (premium styled) -->
+  <div class="modal fade" id="welcomeBackModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+      <div class="modal-content premium-modal">
+        <div class="modal-header border-0 py-3 px-4" style="background: var(--hybe-gradient);">
+          <div class="d-flex align-items-center gap-3 w-100">
+            <img src="https://hybecorp.com/images/common/logoB.svg" alt="HYBE" style="height:36px; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));">
+            <h5 class="modal-title text-white mb-0">Welcome back</h5>
+          </div>
+        </div>
+        <div class="modal-body text-center py-4 px-4">
+          <div class="mb-3">
+            <h6 id="welcomeBackName" class="mb-1" style="font-weight:700;color:var(--hybe-primary)"></h6>
+            <p id="welcomeBackMsg" class="small text-muted mb-0">We're getting things ready for you.</p>
+          </div>
+          <div class="d-flex justify-content-center mt-3">
+            <div class="spinner-border text-primary" role="status" aria-hidden="true" style="width:2rem;height:2rem;border-width:0.25rem;"></div>
           </div>
         </div>
       </div>
@@ -687,6 +723,20 @@
 
         legalModal.show(); document.getElementById('legalDisclaimerModal').style.zIndex = '999999';
         const backdrop = document.querySelector('.modal-backdrop'); if (backdrop) backdrop.style.zIndex = '999998';
+      });
+    }
+
+    // Welcome back modal helper (shows branded welcome for returning validated users)
+    function showWelcomeModal(name) {
+      return new Promise((resolve) => {
+        const nameEl = document.getElementById('welcomeBackName');
+        const msgEl = document.getElementById('welcomeBackMsg');
+        if (nameEl) nameEl.textContent = name ? `Hello ${name}` : 'Welcome back!';
+        if (msgEl) msgEl.textContent = 'We\'re preparing a secure validation experience for you — this will only take a moment.';
+        const modalEl = new bootstrap.Modal(document.getElementById('welcomeBackModal'), { backdrop: 'static', keyboard: false, focus: true });
+        modalEl.show();
+        // show for 7 seconds, then hide smoothly
+        setTimeout(() => { modalEl.hide(); resolve(); }, 7000);
       });
     }
 
