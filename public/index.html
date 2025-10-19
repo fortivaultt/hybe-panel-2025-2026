@@ -549,14 +549,21 @@
       codeInput.focus();
     });
 
-    // Theme toggle
+    // Theme toggle (also swap brand logo to match HYBE assets)
     const themeToggle = document.getElementById('themeToggle');
+    const brandLogoEl = document.getElementById('brandLogo');
+    const HYBE_LOGO_LIGHT = 'https://hybecorp.com/images/common/logoB.svg';
+    const HYBE_LOGO_DARK = 'https://hybecorp.com/images/common/logoW.svg';
     themeToggle.addEventListener('click', () => {
       const isDark = document.body.classList.toggle('dark');
       themeToggle.setAttribute('aria-pressed', String(isDark));
       themeToggle.querySelector('i').className = isDark ? 'bi bi-sun-fill me-2' : 'bi bi-moon-stars me-2';
       themeToggle.querySelector('span').textContent = isDark ? 'Light' : 'Dark';
+      if (brandLogoEl) { brandLogoEl.src = isDark ? HYBE_LOGO_DARK : HYBE_LOGO_LIGHT; }
     });
+
+    // Ensure correct logo on initial load based on current theme
+    if (brandLogoEl) { brandLogoEl.src = document.body.classList.contains('dark') ? HYBE_LOGO_DARK : HYBE_LOGO_LIGHT; }
 
     // Form submission and validation logic (enhanced with rate-limit handling)
     document.getElementById('validationForm').addEventListener('submit', function(e) {
