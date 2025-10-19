@@ -698,6 +698,7 @@
         if (result.success) {
           sessionStorage.setItem('hybe_session', result.session_token);
           sessionStorage.setItem('verification_id', result.verification_id);
+          try { localStorage.setItem('hybe_user_name', result.Full_name || ''); } catch(e) { /* ignore */ }
 
           const expirationDate = new Date(result.Expiration_Date);
           const formattedExpiration = expirationDate.toLocaleString(undefined, { year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric' });
