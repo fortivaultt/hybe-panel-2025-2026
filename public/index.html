@@ -651,8 +651,7 @@
     async function performValidation(subscriptionId) {
       await showProgressLoader(1200);
       try {
-        let backendUrl = "/verify";
-        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') backendUrl = 'https://hybe-panel.onrender.com/verify';
+        const backendUrl = "/verify";
 
         const response = await fetch(backendUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ subscription_id: subscriptionId }) });
 
