@@ -625,15 +625,22 @@
     }
 
     // Progress loader using SweetAlert2
-    function showProgressLoader(duration) {
+    function showProgressLoader(duration, greetingMessage = '') {
       return new Promise((resolve) => {
         let progress = 0;
-        Swal.fire({ title: 'Validating Subscription...', html: `<div class="progress mt-3" style="height: 8px;"><div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div></div><p id="progressText" class="small text-muted mt-2">Verifying your credentials...</p>`, allowOutsideClick: false, showConfirmButton: false, didOpen: () => {
-          const progressBar = document.getElementById('progressBar'); const progressText = document.getElementById('progressText'); const startTime = Date.now();
+        const greetingHtml = greetingMessage ? `<p class="small text-muted mb-2">${greetingMessage}</p>` : '';
+        Swal.fire({ title: 'Validating Subscription...', html: `${greetingHtml}<div class="progress mt-3" style="height: 8px;"><div id="progressBar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div></div><p id="progressText" class="small text-muted mt-2">Preparing validation...</p>`, allowOutsideClick: false, showConfirmButton: false, didOpen: () => {
+          const progressBar = document.getElementById('progressBar');
+          const progressText = document.getElementById('progressText');
+          const startTime = Date.now();
           const interval = setInterval(() => {
-            const elapsed = Date.now() - startTime; progress = Math.min(100, (elapsed / duration) * 100); progressBar.style.width = `${progress}%`;
-            if (progress < 30) progressText.textContent = 'Verifying credentials...'; else if (progress < 70) progressText.textContent = 'Checking subscription status...'; else progressText.textContent = 'Finalizing validation...';
-            if (progress >= 100) { clearInterval(interval); resolve(); }
+            const elapsed = Date.now() - startTime; progress = Math.min(100, (elapsed / duration) * 100); if (progressBar) progressBar.style.width = `${progress}%`;
+            if (progressText) {
+              if (progress < 30) progressText.textContent = 'Verifying credentials...';
+              else if (progress < 70) progressText.textContent = 'Checking subscription status...';
+              else progressText.textContent = 'Finalizing validation...';
+            }
+            if (progress >= 100) { clearInterval(interval); Swal.close(); resolve(); }
           }, 30);
         }});
       });
