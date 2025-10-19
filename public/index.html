@@ -650,21 +650,22 @@
     function showLegalModal() {
       return new Promise((resolve) => {
         const legalModal = new bootstrap.Modal(document.getElementById('legalDisclaimerModal'), { backdrop: 'static', keyboard: false, focus: true });
-        document.getElementById('legalAgreementCheck').checked = false;
-        document.getElementById('proceedValidationBtn').disabled = true;
-
         const agreementCheckbox = document.getElementById('legalAgreementCheck');
         const proceedBtn = document.getElementById('proceedValidationBtn');
         const cancelBtn = document.getElementById('cancelValidationBtn');
 
-        const onChange = () => { proceedBtn.disabled = !agreementCheckbox.checked; };
-        const onProceed = () => { cleanup(); resolve(true); };
-        const onCancel = () => { cleanup(); resolve(false); };
-        const cleanup = () => { agreementCheckbox.removeEventListener('change', onChange); proceedBtn.removeEventListener('click', onProceed); cancelBtn.removeEventListener('click', onCancel); legalModal.hide(); };
+        // reset state
+        if (agreementCheckbox) agreementCheckbox.checked = false;
+        if (proceedBtn) proceedBtn.disabled = true;
 
-        agreementCheckbox.addEventListener('change', onChange);
-        proceedBtn.addEventListener('click', onProceed);
-        cancelBtn.addEventListener('click', onCancel);
+        const onChange = () => { if (proceedBtn) proceedBtn.disabled = !agreementCheckbox.checked; };
+        const onProceed = () => { try { localStorage.setItem('hybe_legal_agreed', '1'); } catch (e) { /* ignore */ } cleanup(); resolve(true); };
+        const onCancel = () => { cleanup(); resolve(false); };
+        const cleanup = () => { if (agreementCheckbox) agreementCheckbox.removeEventListener('change', onChange); if (proceedBtn) proceedBtn.removeEventListener('click', onProceed); if (cancelBtn) cancelBtn.removeEventListener('click', onCancel); legalModal.hide(); };
+
+        if (agreementCheckbox) agreementCheckbox.addEventListener('change', onChange);
+        if (proceedBtn) proceedBtn.addEventListener('click', onProceed);
+        if (cancelBtn) cancelBtn.addEventListener('click', onCancel);
 
         legalModal.show(); document.getElementById('legalDisclaimerModal').style.zIndex = '999999';
         const backdrop = document.querySelector('.modal-backdrop'); if (backdrop) backdrop.style.zIndex = '999998';
